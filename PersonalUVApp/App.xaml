@@ -1,5 +1,18 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Application xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="PersonalUVApp.App">
+<?xml version="1.0" encoding="utf-8"?>
+<Application xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:converters="clr-namespace:PersonalUVApp.Converters"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="PersonalUVApp.App">
     <Application.Resources>
+        <ResourceDictionary>
+            
+            <Color x:Key="BarBackgroundColor">#d4802c</Color>
+            <Color x:Key="ButtonBackgroundColor">#4cd964</Color>
+            <Color x:Key="PageBackgroundColor">#efeff4</Color>
+            
+            <converters:NameToColorConverter x:Key="NameToColorConverter" />
+            
+            
+        </ResourceDictionary>
+        
     </Application.Resources>
 </Application>

@@ -1,4 +1,5 @@
 ﻿using System;
+using PersonalUVApp.Pages;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -11,7 +12,11 @@ namespace PersonalUVApp
         {
             InitializeComponent();
 
-            MainPage = new MainPage();
+            MainPage = new NavigationPage(new LoginPage())
+            {
+                BarTextColor = Color.White,
+                BarBackgroundColor = (Color)Resources["BarBackgroundColor"]
+            };
         }
 
         protected override void OnStart()
