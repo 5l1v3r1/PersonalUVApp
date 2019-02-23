@@ -1,20 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace PersonalUVApp.Controls
 {
     public partial class UnderLineLabel : ContentView
     {
+
+        public Command SelectMenuCommand { protected set; get; }
+
         public UnderLineLabel()
         {
             InitializeComponent();
+            BindingContext = this;
         }
+
         public string Text
         {
             get { return (string)GetValue(TextProperty); }
             set { SetValue(TextProperty, value); }
         }
+        public Color LineColor
+        {
+            get { return (Color)GetValue(LineColorProperty); }
+            set { SetValue(LineColorProperty, value); }
+        }
+
+        public Color TextColor
+        {
+            get { return (Color)GetValue(TextColorProperty); }
+            set { SetValue(TextColorProperty, value); }
+        }
+
+
+
         public static BindableProperty TextProperty = BindableProperty.Create(nameof(Text),
                                                   typeof(string),
                                                   typeof(UnderLineLabel),
@@ -24,11 +45,7 @@ namespace PersonalUVApp.Controls
                                                       var matEntry = (UnderLineLabel)bindable;
                                                       matEntry.customLabel.Text = (string)newVal;
                                                   });
-        public Color LineColor
-        {
-            get { return (Color)GetValue(LineColorProperty); }
-            set { SetValue(LineColorProperty, value); }
-        }
+       
         public static BindableProperty LineColorProperty = BindableProperty.Create(nameof(LineColor),
                                                   typeof(Color),
                                                   typeof(UnderLineLabel),
@@ -53,10 +70,6 @@ namespace PersonalUVApp.Controls
                 matEntry.customLabel.TextColor = (Color)newVal;
             });
 
-        public Color TextColor
-        {
-            get { return (Color)GetValue(TextColorProperty); }
-            set { SetValue(TextColorProperty, value); }
-        }
+      
     }
 }
