@@ -1,8 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="PersonalUVApp.Pages.RegisterPage">
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:PersonalUVApp.Controls;assembly=PersonalUVApp"
+             x:Class="PersonalUVApp.Pages.RegisterPage"
+             Title="Register"
+             BackgroundColor="{StaticResource PageBackgroundColor}">
     <ContentPage.Content>
-        <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
-            <Label Text="Bismillah Register Page" />
-        </StackLayout>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <!-- <RowDefinition Height="8*" /> -->
+            </Grid.RowDefinitions>
+            <controls:MyTableView Intent="Settings" Margin="10,0" Grid.Row="1" VerticalOptions="CenterAndExpand">
+                <TableRoot>
+                    <TableSection>
+                        <EntryCell Label="Username:" Placeholder="Bismillah" />
+                        <EntryCell Label="Password:" />
+                        <EntryCell Label="First Name:" />
+                        <EntryCell Label="Last Name:" />
+                        <EntryCell Label="Age:" />
+                        <EntryCell Label="Skin Type:" />
+                        <EntryCell Label="Location:" />
+                    </TableSection>
+                    <TableSection>
+                        <ViewCell>
+                            <Button Text="Register"
+                                    FontAttributes="Bold"
+                                    HorizontalOptions="Fill"
+                                    Clicked="RegisterAsync"
+                                    TextColor="White" BackgroundColor="{StaticResource ButtonBackgroundColor}" />
+                        </ViewCell>
+                    </TableSection>
+                </TableRoot>
+            </controls:MyTableView>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

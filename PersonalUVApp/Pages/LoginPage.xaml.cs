@@ -42,7 +42,7 @@ namespace PersonalUVApp.Pages
             Console.WriteLine(e.Parameter +  " asdad_" );
         }
 
-        void LoginAsync(object sender, System.EventArgs e)
+        private void LoginAsync(object sender, System.EventArgs e)
         {
             App.UVApp.NavigateToPage(new MainPage());
         }

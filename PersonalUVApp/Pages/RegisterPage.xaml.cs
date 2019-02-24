@@ -12,5 +12,10 @@ namespace PersonalUVApp.Pages
             InitializeComponent();
             BindingContext = this;
         }
+
+        private void RegisterAsync(object sender, EventArgs e)
+        {
+            App.UVApp.NavigateToPage(new LoginPage());
+        }
     }
 }
