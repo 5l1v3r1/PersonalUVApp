@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Windows.Input;
-using PersonalUVApp.Models;
+﻿using PersonalUVApp.Models;
+using System;
 using Xamarin.Forms;
 
 namespace PersonalUVApp.Pages
@@ -27,7 +25,7 @@ namespace PersonalUVApp.Pages
 
         private void NavigatePage(PageActionEnum obj)
         {
-            Console.WriteLine(obj + " asdasdas ");
+            Console.WriteLine(obj);
         }
 
         void Handle_Tapped(object sender, TappedEventArgs e)
@@ -39,12 +37,43 @@ namespace PersonalUVApp.Pages
             else if (page == PageActionEnum.Register)
                 App.UVApp.NavigateToPage(new RegisterPage());
 
-            Console.WriteLine(e.Parameter +  " asdad_" );
         }
 
-        private void LoginAsync(object sender, System.EventArgs e)
+        private void OnLoginButtonClicked(object sender, EventArgs e)
         {
+            User user = new User
+            {
+                Username = UsernameEntry.Text,
+                Password = PasswordEntry.Text
+            };
+            var isValid = AreCredentialsCorrect(user);
+            if (!isValid)
+            {
+                Console.WriteLine("Login failed");
+                PasswordEntry.Text = string.Empty;
+                return;
+            }
+
+            App.IsUserLoggedIn = true;
             App.UVApp.NavigateToPage(new MainPage());
         }
+
+        protected bool AreCredentialsCorrect(User user)
+        {
+            return true;
+        }
+        /*private void SwitchDataOnChanged(object sender, ToggledEventArgs e)
+        {
+
+        }
+        protected override void OnBindingContextChanged()
+        {
+            base.OnBindingContextChanged();
+
+            if (BindingContext != null)
+            {
+                RememberSwitch.IsEnabled = IsEnabled;
+            }
+        }*/
     }
 }

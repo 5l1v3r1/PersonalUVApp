@@ -9,25 +9,26 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
+                <RowDefinition />
                 <!-- <RowDefinition Height="8*" /> -->
             </Grid.RowDefinitions>
             <controls:MyTableView Intent="Settings" Margin="10,0" Grid.Row="1" VerticalOptions="CenterAndExpand">
                 <TableRoot>
                     <TableSection>
-                        <EntryCell Label="Username:" Placeholder="Bismillah" />
-                        <EntryCell Label="Password:" />
-                        <EntryCell Label="First Name:" />
-                        <EntryCell Label="Last Name:" />
-                        <EntryCell Label="Age:" />
-                        <EntryCell Label="Skin Type:" />
-                        <EntryCell Label="Location:" />
+                        <EntryCell Label="Username:" x:Name="UsernameEntry" Placeholder="Bismillah" />
+                        <EntryCell Label="Password:" x:Name="PasswordEntry"/>
+                        <EntryCell Label="First Name:" x:Name="FirstnameEntry"/>
+                        <EntryCell Label="Last Name:" x:Name="LastnameEntry"/>
+                        <EntryCell Label="Age:" x:Name="AgeEntry" />
+                        <EntryCell Label="Skin Type:" x:Name="SkinTypeEntry"/>
+                        <EntryCell Label="Location:" x:Name="LocationEntry"/>
                     </TableSection>
                     <TableSection>
                         <ViewCell>
                             <Button Text="Register"
                                     FontAttributes="Bold"
                                     HorizontalOptions="Fill"
-                                    Clicked="RegisterAsync"
+                                    Clicked="OnRegisterButtonClicked"
                                     TextColor="White" BackgroundColor="{StaticResource ButtonBackgroundColor}" />
                         </ViewCell>
                     </TableSection>

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using PersonalUVApp.Pages;
+﻿using PersonalUVApp.Pages;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -10,16 +8,23 @@ namespace PersonalUVApp
     public partial class App : Application
     {
         public static App UVApp => Current as App;
-
+        public static bool IsUserLoggedIn { get; set; }
         public App()
         {
             InitializeComponent();
 
-            MainPage = new NavigationPage(new LoginPage())
+            if (!IsUserLoggedIn)
             {
-                BarTextColor = Color.White,
-                BarBackgroundColor = (Color)Resources["BarBackgroundColor"]
-            };
+                MainPage = new NavigationPage(new LoginPage())
+                {
+                    BarTextColor = Color.White,
+                    BarBackgroundColor = (Color)Resources["BarBackgroundColor"]
+                };
+            }
+            else
+            { 
+                MainPage = new NavigationPage(new MainPage()); //boyle kalsin simdilik
+            }
         }
 
         public async void NavigateToPage(ContentPage page, bool animation = true)

@@ -16,7 +16,6 @@
     <Folder Include="Pages\" />
     <Folder Include="Controls\" />
     <Folder Include="Converters\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Pages\Deneme.cs" />
