@@ -1,7 +1,8 @@
 ﻿using PersonalUVApp.Models;
 using System;
+using System.Linq;
+using SQLite;
 using Xamarin.Forms;
-
 namespace PersonalUVApp.Pages
 {
     public partial class LoginPage : ContentPage
@@ -27,15 +28,14 @@ namespace PersonalUVApp.Pages
         {
             Console.WriteLine(obj);
         }
-
-        void Handle_Tapped(object sender, TappedEventArgs e)
+        void Handle_Tapped(object sender, EventArgs e)
         {
-            PageActionEnum page = (PageActionEnum)e.Parameter;
+            /*PageActionEnum page = (PageActionEnum)e.Parameter;
 
             if (page == PageActionEnum.ForgetPassword)
                 App.UVApp.NavigateToPage(new ForgetPasswordPage());
-            else if (page == PageActionEnum.Register)
-                App.UVApp.NavigateToPage(new RegisterPage());
+            else if (page == PageActionEnum.Register)*/
+            App.UvApp.NavigateToPage(new RegisterPage());
 
         }
 
@@ -46,22 +46,43 @@ namespace PersonalUVApp.Pages
                 Username = UsernameEntry.Text,
                 Password = PasswordEntry.Text
             };
-            var isValid = AreCredentialsCorrect(user);
-            if (!isValid)
+
+            try
             {
-                Console.WriteLine("Login failed");
-                PasswordEntry.Text = string.Empty;
-                return;
+                string dbPath = System.IO.Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), App.DbName+".db3"); //Call Database  
+                var db = new SQLiteConnection(dbPath);  
+                var data = db.Table <User> ();
+
+                var data1 = data.FirstOrDefault(
+                    x => x.Username.Equals(UsernameEntry.Text)); //&& x.Password == PasswordEntry.Text); //Linq Query  
+
+                //                var data1 = data.FirstOrDefault(x => x.Username == UsernameEntry.Text);
+                if (data1 == null)
+                {
+
+                    DisplayAlert("Something Wrong!", "Username or Password invalid", "OK");
+                    PasswordEntry.Text = string.Empty;
+                    return;
+                }
+                DisplayAlert("Welcome", "Login Success", "OK"); //Bu silinecek
+                App.IsUserLoggedIn = true;
+                App.UvApp.NavigateToPage(new MainPage());
+            }
+            catch (Exception ex)
+            {
+                DisplayAlert("Login", ex.ToString(), "OK");
             }
 
-            App.IsUserLoggedIn = true;
-            App.UVApp.NavigateToPage(new MainPage());
+
+
+
+
         }
 
-        protected bool AreCredentialsCorrect(User user)
+        /*protected bool AreCredentialsCorrect(User user)
         {
             return true;
-        }
+        }*/
         /*private void SwitchDataOnChanged(object sender, ToggledEventArgs e)
         {
 

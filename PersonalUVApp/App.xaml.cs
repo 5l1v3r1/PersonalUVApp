@@ -5,10 +5,12 @@ using Xamarin.Forms.Xaml;
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace PersonalUVApp
 {
-    public partial class App : Application
+    public partial class App //: Application
     {
-        public static App UVApp => Current as App;
+        public static string DbName { get; set; } = "UserDb";
+        public static App UvApp => Current as App;
         public static bool IsUserLoggedIn { get; set; }
+
         public App()
         {
             InitializeComponent();
@@ -22,7 +24,7 @@ namespace PersonalUVApp
                 };
             }
             else
-            { 
+            {
                 MainPage = new NavigationPage(new MainPage()); //boyle kalsin simdilik
             }
         }

@@ -13,7 +13,7 @@ namespace PersonalUVApp.Pages
 
         private void ForgetPasswordAsync(object sender, EventArgs e)
         {
-            App.UVApp.NavigateToPage(new MainPage());
+            App.UvApp.NavigateToPage(new MainPage());
         }
     }
 }

@@ -1,34 +1,42 @@
-﻿using PersonalUVApp.Models;
+﻿using PersonalUVApp.Helper;
+using PersonalUVApp.Models;
 using System;
 using System.Linq;
+using SQLite;
 using Xamarin.Forms;
 
 namespace PersonalUVApp.Pages
 {
-    public partial class RegisterPage :ContentPage
+    public partial class RegisterPage : ContentPage
     {
+        public readonly SQLiteConnection db;
+
         public RegisterPage()
         {
             InitializeComponent();
             BindingContext = this;
+            db = DependencyService.Get<ISQLiteConnection>().CreateConnection();
+            db.CreateTable<User>();
         }
 
         private async void OnRegisterButtonClicked(object sender, EventArgs e)
         {
-            var user = new User()
+            if (AreDetailsValid())
             {
-                Username = UsernameEntry.Text,
-                Password = PasswordEntry.Text,
-                FirstName = FirstnameEntry.Text,
-                LastName = LastnameEntry.Text,
-//                Age = int.Parse(AgeEntry.Text),
-                SkinType = SkinTypeEntry.Text,
-                Location = LocationEntry.Text,
-            };
-            var signUpSucceeded = AreDetailsValid(user);
-            if (signUpSucceeded)
-            {
-                var rootPage = Navigation.NavigationStack.FirstOrDefault();
+                int _test = db.Insert(new User
+                {
+                    Username = UsernameEntry.Text,
+                    Password = PasswordEntry.Text,
+                    FirstName = FirstnameEntry.Text,
+                    LastName = LastnameEntry.Text,
+                    //                Age = Convert.ToInt32(AgeEntry.Text),
+                    SkinType = SkinTypeEntry.Text,
+                    Location = LocationEntry.Text,
+                });
+                Console.WriteLine("Kayit yapildi mi?"+_test);
+                //                await Navigation.PopAsync();
+
+                Page rootPage = Navigation.NavigationStack.FirstOrDefault();
                 if (rootPage != null)
                 {
                     App.IsUserLoggedIn = true;
@@ -42,9 +50,9 @@ namespace PersonalUVApp.Pages
             }
         }
 
-        protected bool AreDetailsValid(User user)
+        protected bool AreDetailsValid()
         {
-            return !string.IsNullOrWhiteSpace(user.Username) && !string.IsNullOrWhiteSpace(user.Password);
+            return !string.IsNullOrWhiteSpace(UsernameEntry.Text); //&& !string.IsNullOrWhiteSpace(PasswordEntry.Text);
         }
     }
 }
