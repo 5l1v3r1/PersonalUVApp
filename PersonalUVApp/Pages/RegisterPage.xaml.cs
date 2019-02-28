@@ -9,21 +9,20 @@ namespace PersonalUVApp.Pages
 {
     public partial class RegisterPage : ContentPage
     {
-        public readonly SQLiteConnection db;
-
+        
         public RegisterPage()
         {
             InitializeComponent();
             BindingContext = this;
-            db = DependencyService.Get<ISQLiteConnection>().CreateConnection();
-            db.CreateTable<User>();
+            App.db = DependencyService.Get<ISQLiteConnection>().CreateConnection();
+            App.db.CreateTable<User>();
         }
 
         private async void OnRegisterButtonClicked(object sender, EventArgs e)
         {
             if (AreDetailsValid())
             {
-                int _test = db.Insert(new User
+                int _test = App.db.Insert(new User
                 {
                     Username = UsernameEntry.Text,
                     Password = PasswordEntry.Text,

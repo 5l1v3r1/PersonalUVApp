@@ -49,15 +49,13 @@ namespace PersonalUVApp.Pages
 
             try
             {
-                string dbPath = System.IO.Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), App.DbName+".db3"); //Call Database  
-                var db = new SQLiteConnection(dbPath);  
-                var data = db.Table <User> ();
+//                var data = App.db.Table <User> ();
 
-                var data1 = data.FirstOrDefault(
+                var verificationUser = (App.db.Table <User> ()).FirstOrDefault(
                     x => x.Username.Equals(UsernameEntry.Text)); //&& x.Password == PasswordEntry.Text); //Linq Query  
 
                 //                var data1 = data.FirstOrDefault(x => x.Username == UsernameEntry.Text);
-                if (data1 == null)
+                if (verificationUser == null)
                 {
 
                     DisplayAlert("Something Wrong!", "Username or Password invalid", "OK");

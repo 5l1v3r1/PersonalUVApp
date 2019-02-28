@@ -1,6 +1,7 @@
 ﻿using PersonalUVApp.Pages;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using SQLite;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace PersonalUVApp
@@ -10,7 +11,7 @@ namespace PersonalUVApp
         public static string DbName { get; set; } = "UserDb";
         public static App UvApp => Current as App;
         public static bool IsUserLoggedIn { get; set; }
-
+        public static SQLiteConnection db{ get; set; }
         public App()
         {
             InitializeComponent();
