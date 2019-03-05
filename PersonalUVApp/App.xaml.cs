@@ -1,25 +1,43 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
+using PersonalUVApp.Helper;
+using PersonalUVApp.Models;
 using PersonalUVApp.Pages;
+using Plugin.BLE;
+using Plugin.BLE.Abstractions.Contracts;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using SQLite;
+using System;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace PersonalUVApp
 {
-    public partial class App : Application
+    public partial class App //: Application
     {
-        public static App UVApp => Current as App;
+        public static string DbName { get; set; } = "UserDb";
+        public static App UvApp => Current as App;
+        public static bool IsUserLoggedIn { get; set; }
+        public static SQLiteConnection Db{ get; set; }
 
+        
         public App()
         {
             InitializeComponent();
-
-            MainPage = new NavigationPage(new LoginPage())
+            Db = DependencyService.Get<ISQLiteConnection>().CreateConnection();
+            Db.CreateTable<User>();
+            if (!IsUserLoggedIn)
             {
-                BarTextColor = Color.White,
-                BarBackgroundColor = (Color)Resources["BarBackgroundColor"]
-            };
+                MainPage = new NavigationPage(new LoginPage())
+                {
+                    BarTextColor = Color.White,
+                    BarBackgroundColor = (Color)Resources["BarBackgroundColor"]
+                };
+            }
+            else
+            {
+                MainPage = new NavigationPage(new MainPage()); //boyle kalsin simdilik
+
+            }
         }
 
         public async void NavigateToPage(ContentPage page, bool animation = true)

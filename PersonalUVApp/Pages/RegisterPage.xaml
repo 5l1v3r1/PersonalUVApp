@@ -1,8 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="PersonalUVApp.Pages.RegisterPage">
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:PersonalUVApp.Controls;assembly=PersonalUVApp"
+             x:Class="PersonalUVApp.Pages.RegisterPage"
+             Title="Register"
+             BackgroundColor="{StaticResource PageBackgroundColor}">
     <ContentPage.Content>
-        <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
-            <Label Text="Bismillah Register Page" />
-        </StackLayout>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+                <!-- <RowDefinition Height="8*" /> -->
+            </Grid.RowDefinitions>
+            <controls:MyTableView Intent="Settings" Margin="10,0" Grid.Row="1" VerticalOptions="CenterAndExpand">
+                <TableRoot>
+                    <TableSection>
+                        <EntryCell Label="Username:" x:Name="UsernameEntry" Placeholder="Bismillah" />
+                        <EntryCell Label="Password:" x:Name="PasswordEntry"/>
+                        <EntryCell Label="First Name:" x:Name="FirstnameEntry"/>
+                        <EntryCell Label="Last Name:" x:Name="LastnameEntry"/>
+                        <EntryCell Label="Age:" x:Name="AgeEntry" />
+                        <EntryCell Label="Skin Type:" x:Name="SkinTypeEntry"/>
+                        <EntryCell Label="Location:" x:Name="LocationEntry"/>
+                    </TableSection>
+                    <TableSection>
+                        <ViewCell>
+                            <Button Text="Register"
+                                    FontAttributes="Bold"
+                                    HorizontalOptions="Fill"
+                                    Clicked="OnRegisterButtonClicked"
+                                    TextColor="White" BackgroundColor="{StaticResource ButtonBackgroundColor}" />
+                        </ViewCell>
+                    </TableSection>
+                </TableRoot>
+            </controls:MyTableView>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

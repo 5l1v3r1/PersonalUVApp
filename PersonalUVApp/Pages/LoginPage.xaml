@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              xmlns:models="clr-namespace:PersonalUVApp.Models"
              xmlns:controls="clr-namespace:PersonalUVApp.Controls" 
-             xmlns:converters="clr-namespace:PersonalUVApp.Converters"
              x:Class="PersonalUVApp.Pages.LoginPage" 
              Title="Login" 
              BackgroundColor="{StaticResource PageBackgroundColor}">
@@ -16,16 +15,17 @@
             <controls:MyTableView Intent="Settings" Margin="10,0" Grid.Row="1" VerticalOptions="CenterAndExpand">
                 <TableRoot>
                     <TableSection>
-                        <EntryCell Label="Username:" Placeholder="Enter your name" Text="{Binding UserName}" />
-                        <EntryCell Label="Password:" Placeholder="Enter your password" />
-                        <SwitchCell Text="Remember Me" On="true" />
+                        <EntryCell Label="Username:" x:Name="UsernameEntry" Placeholder="Enter your name" Text="{Binding UserName}" />
+                        <EntryCell Label="Password:" x:Name="PasswordEntry" Placeholder="Enter your password" />
+                        <SwitchCell Text="Remember Me" x:Name="RememberSwitch"  IsEnabled="True" />
+                                    <!-- On="{Binding Mode=TwoWay}" OnChanged="SwitchDataOnChanged" -->
                     </TableSection>
                     <TableSection>
                         <ViewCell>
                             <Button Text="Login" 
                                     FontAttributes="Bold"
                                     HorizontalOptions="Fill" 
-                                    Clicked="LoginAsync"
+                                    Clicked="OnLoginButtonClicked"
                                     TextColor="White" BackgroundColor="{StaticResource ButtonBackgroundColor}">
                                   
                             </Button>
@@ -37,7 +37,7 @@
                             <controls:UnderLineLabel Text="Forget Password" 
                                                      LineColor="Black" HorizontalOptions="Fill">
                                 <controls:UnderLineLabel.GestureRecognizers>
-                                    <TapGestureRecognizer Tapped="Handle_Tapped" 
+                                    <TapGestureRecognizer 
                                                           CommandParameter="{x:Static models:PageActionEnum.ForgetPassword}" />
                                         
                                     
@@ -50,7 +50,7 @@
                             <controls:UnderLineLabel Text="Click here to Register"
                                                      LineColor="Black" HorizontalOptions="Fill">
                                <controls:UnderLineLabel.GestureRecognizers>
-                                    <TapGestureRecognizer Tapped="Handle_Tapped" 
+                                    <TapGestureRecognizer Tapped="Handle_Tapped"
                                                           CommandParameter="{x:Static models:PageActionEnum.Register}" />
                                         
                                     
