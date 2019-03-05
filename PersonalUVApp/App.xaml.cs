@@ -1,7 +1,13 @@
-﻿using PersonalUVApp.Pages;
+﻿using System.Collections.ObjectModel;
+using PersonalUVApp.Helper;
+using PersonalUVApp.Models;
+using PersonalUVApp.Pages;
+using Plugin.BLE;
+using Plugin.BLE.Abstractions.Contracts;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using SQLite;
+using System;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace PersonalUVApp
@@ -11,11 +17,14 @@ namespace PersonalUVApp
         public static string DbName { get; set; } = "UserDb";
         public static App UvApp => Current as App;
         public static bool IsUserLoggedIn { get; set; }
-        public static SQLiteConnection db{ get; set; }
+        public static SQLiteConnection Db{ get; set; }
+
+        
         public App()
         {
             InitializeComponent();
-
+            Db = DependencyService.Get<ISQLiteConnection>().CreateConnection();
+            Db.CreateTable<User>();
             if (!IsUserLoggedIn)
             {
                 MainPage = new NavigationPage(new LoginPage())
@@ -27,6 +36,7 @@ namespace PersonalUVApp
             else
             {
                 MainPage = new NavigationPage(new MainPage()); //boyle kalsin simdilik
+
             }
         }
 

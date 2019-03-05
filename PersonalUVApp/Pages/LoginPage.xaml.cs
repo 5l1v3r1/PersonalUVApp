@@ -51,7 +51,7 @@ namespace PersonalUVApp.Pages
             {
 //                var data = App.db.Table <User> ();
 
-                var verificationUser = (App.db.Table <User> ()).FirstOrDefault(
+                var verificationUser = (App.Db.Table <User> ()).FirstOrDefault(
                     x => x.Username.Equals(UsernameEntry.Text)); //&& x.Password == PasswordEntry.Text); //Linq Query  
 
                 //                var data1 = data.FirstOrDefault(x => x.Username == UsernameEntry.Text);
@@ -62,9 +62,9 @@ namespace PersonalUVApp.Pages
                     PasswordEntry.Text = string.Empty;
                     return;
                 }
-                DisplayAlert("Welcome", "Login Success", "OK"); //Bu silinecek
+                //DisplayAlert("Welcome", "Login Success", "OK"); //Bu silinecek
                 App.IsUserLoggedIn = true;
-                App.UvApp.NavigateToPage(new MainPage());
+                App.UvApp.NavigateToPage(new BluetoothPage());
             }
             catch (Exception ex)
             {

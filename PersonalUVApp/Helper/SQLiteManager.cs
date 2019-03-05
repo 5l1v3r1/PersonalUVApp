@@ -1,4 +1,5 @@
-﻿using PersonalUVApp.Models;
+﻿/*
+using PersonalUVApp.Models;
 using SQLite;
 using System.Collections.Generic;
 using Xamarin.Forms;
@@ -49,3 +50,4 @@ namespace PersonalUVApp.Helper
         #endregion
     }
 }
+*/

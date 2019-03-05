@@ -1,28 +1,24 @@
-﻿using PersonalUVApp.Helper;
-using PersonalUVApp.Models;
+﻿using PersonalUVApp.Models;
 using System;
 using System.Linq;
-using SQLite;
 using Xamarin.Forms;
 
 namespace PersonalUVApp.Pages
 {
     public partial class RegisterPage : ContentPage
     {
-        
         public RegisterPage()
         {
             InitializeComponent();
             BindingContext = this;
-            App.db = DependencyService.Get<ISQLiteConnection>().CreateConnection();
-            App.db.CreateTable<User>();
         }
 
         private async void OnRegisterButtonClicked(object sender, EventArgs e)
         {
             if (AreDetailsValid())
             {
-                int _test = App.db.Insert(new User
+
+                App.Db.Insert(new User
                 {
                     Username = UsernameEntry.Text,
                     Password = PasswordEntry.Text,
@@ -32,16 +28,13 @@ namespace PersonalUVApp.Pages
                     SkinType = SkinTypeEntry.Text,
                     Location = LocationEntry.Text,
                 });
-                Console.WriteLine("Kayit yapildi mi?"+_test);
                 //                await Navigation.PopAsync();
 
-                Page rootPage = Navigation.NavigationStack.FirstOrDefault();
-                if (rootPage != null)
-                {
-                    App.IsUserLoggedIn = true;
-                    Navigation.InsertPageBefore(new MainPage(), Navigation.NavigationStack.First());
-                    await Navigation.PopToRootAsync();
-                }
+                var rootPage = Navigation.NavigationStack.FirstOrDefault();
+                if (rootPage == null) return;
+                App.IsUserLoggedIn = true;
+                Navigation.InsertPageBefore(new MainPage(), Navigation.NavigationStack.First());
+                await Navigation.PopToRootAsync();
             }
             else
             {
@@ -51,7 +44,7 @@ namespace PersonalUVApp.Pages
 
         protected bool AreDetailsValid()
         {
-            return !string.IsNullOrWhiteSpace(UsernameEntry.Text); //&& !string.IsNullOrWhiteSpace(PasswordEntry.Text);
+            return !string.IsNullOrWhiteSpace(UsernameEntry.Text) && !string.IsNullOrWhiteSpace(PasswordEntry.Text);
         }
     }
 }
