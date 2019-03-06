@@ -3,33 +3,53 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:PersonalUVApp.Controls;assembly=PersonalUVApp"
              x:Class="PersonalUVApp.Pages.RegisterPage"
+             x:helper="clr-namespace:PersonalUVApp.Helper"
              Title="Register"
              BackgroundColor="{StaticResource PageBackgroundColor}">
     <ContentPage.Content>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
-                <RowDefinition />
-                <!-- <RowDefinition Height="8*" /> -->
             </Grid.RowDefinitions>
             <controls:MyTableView Intent="Settings" Margin="10,0" Grid.Row="1" VerticalOptions="CenterAndExpand">
                 <TableRoot>
-                    <TableSection>
-                        <EntryCell Label="Username:" x:Name="UsernameEntry" Placeholder="Bismillah" />
-                        <EntryCell Label="Password:" x:Name="PasswordEntry"/>
-                        <EntryCell Label="First Name:" x:Name="FirstnameEntry"/>
-                        <EntryCell Label="Last Name:" x:Name="LastnameEntry"/>
-                        <EntryCell Label="Age:" x:Name="AgeEntry" />
-                        <EntryCell Label="Skin Type:" x:Name="SkinTypeEntry"/>
-                        <EntryCell Label="Location:" x:Name="LocationEntry"/>
+                    <TableSection BindingContext="{Binding User}">
+                        <EntryCell Label="Username:" Text="{Binding Username}" x:Name="etUser" />
+                        <EntryCell Label="Password:" Text="{Binding Password}" />
+                        <EntryCell Label="First Name:" Text="{Binding FirstName}" />
+                        <EntryCell Label="Last Name:" Text="{Binding LastName}" />
+                        <EntryCell Label="Age:" Text="{Binding Age}" />
+                        <EntryCell Label="Skin Type:" Text="{Binding SkinType}" />
+                        <ViewCell>
+                            <Grid BackgroundColor="#EEEEEE">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                
+                                <Button Text="Type1" />
+                                <Button Text="Type2" Grid.Column="1" />
+                                <Button Text="Type3" Grid.Column="2" />
+                                
+                            </Grid>
+                        </ViewCell>
+                        
+                        <ViewCell>
+                            <Button Text="Get My Location" />
+                        </ViewCell>
+                        
                     </TableSection>
                     <TableSection>
                         <ViewCell>
-                            <Button Text="Register"
-                                    FontAttributes="Bold"
-                                    HorizontalOptions="Fill"
-                                    Clicked="OnRegisterButtonClicked"
-                                    TextColor="White" BackgroundColor="{StaticResource ButtonBackgroundColor}" />
+                            <Button Style="{StaticResource BtnMenu}"
+                                    Text="Register"
+                                    Command="{Binding RegisterCommand}">
+                                <!-- https://docs.microsoft.com/en-us/xamarin/xamarin-forms/app-fundamentals/triggers -->
+                                </Button>
                         </ViewCell>
                     </TableSection>
                 </TableRoot>

@@ -1,25 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+<StackLayout xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             Padding="0" Margin="0" VerticalOptions="Center" HorizontalOptions="Center"
              x:Class="PersonalUVApp.Controls.UnderLineLabel">
+
+       <Label x:Name="customLabel" FontAttributes="Bold"
+              Text="{Binding Text, Mode=TwoWay}"
+              TextColor="{Binding TextColor,Mode=TwoWay}"/>  
+       <BoxView x:Name="customBox" 
+                BackgroundColor="{Binding LineColor,Mode=TwoWay}"  
+                HeightRequest="1"   
+                Margin="0,-8,0,0" />  
     
-<!--    <ContentView.GestureRecognizers>
-        <TapGestureRecognizer
-            Tapped="Handle_Tapped"
-            CommandParameter="asdasd"
-             />
-    </ContentView.GestureRecognizers>-->
-    
-    <ContentView.Content>  
-       <StackLayout Padding="0" Margin="0" VerticalOptions="Center" HorizontalOptions="Center" >  
-           <Label x:Name="customLabel" FontAttributes="Bold"
-                  Text="{Binding Text, Mode=TwoWay}"
-                  TextColor="{Binding TextColor,Mode=TwoWay}"/>  
-           <BoxView x:Name="customBox" 
-                    BackgroundColor="{Binding LineColor,Mode=TwoWay}"  
-                    HeightRequest="1"   
-                    Margin="0,-8,0,0" />  
-       </StackLayout>  
-   </ContentView.Content>  
-    
-</ContentView>
+</StackLayout>

@@ -6,9 +6,8 @@ using Xamarin.Forms;
 
 namespace PersonalUVApp.Controls
 {
-    public partial class UnderLineLabel : ContentView
+    public partial class UnderLineLabel : StackLayout
     {
-
         public Command SelectMenuCommand { protected set; get; }
 
         public UnderLineLabel()

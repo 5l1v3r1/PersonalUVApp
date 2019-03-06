@@ -1,10 +1,11 @@
-﻿using SQLite;
+﻿
+using System.ComponentModel;
+using PropertyChanged;
 
 namespace PersonalUVApp.Models
 {
-    public class User
+    public class UserModel : INotifyPropertyChanged
     {
-        [PrimaryKey, AutoIncrement]
         public int Id { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
@@ -14,5 +15,7 @@ namespace PersonalUVApp.Models
         public string SkinType { get; set; }
         public string Location { get; set; }
         public bool IsRemember { get; set; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

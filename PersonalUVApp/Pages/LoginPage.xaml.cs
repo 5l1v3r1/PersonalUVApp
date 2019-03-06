@@ -3,96 +3,73 @@ using System;
 using System.Linq;
 using SQLite;
 using Xamarin.Forms;
+using PersonalUVApp.Helper;
+using Newtonsoft.Json;
+
 namespace PersonalUVApp.Pages
 {
     public partial class LoginPage : ContentPage
     {
-        public string UserName
-        {
-            get => (string)GetValue(UserNameProperty);
-            set => SetValue(UserNameProperty, value);
-        }
-
-        public static readonly BindableProperty UserNameProperty = BindableProperty.Create(nameof(UserName), typeof(string), typeof(LoginPage), default(string));
-
         public Command<PageActionEnum> NavigateCommand { protected set; get; }
 
         public LoginPage()
         {
-            NavigateCommand = new Command<PageActionEnum>(NavigatePage);
-            InitializeComponent();
-            BindingContext = this;
+            if (Settings.IsRememberMe == false)
+            {
+                InitializeComponent();
+                NavigateCommand = new Command<PageActionEnum>(NavigatePage);
+                BindingContext = this;
+            }
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+
+            if (Settings.IsRememberMe)
+            {
+                App.UvApp.ChangeRoot(new BluetoothPage());
+            }
+            else
+            {
+                if (Settings.IsUserModelSet == true)
+                {
+                    UserModel usr = JsonConvert.DeserializeObject<UserModel>(Settings.UserJson);
+
+                    UsernameEntry.Text = usr.Username;
+                    PasswordEntry.Text = usr.Password;
+                }
+            }
         }
 
         private void NavigatePage(PageActionEnum obj)
         {
-            Console.WriteLine(obj);
-        }
-        void Handle_Tapped(object sender, EventArgs e)
-        {
-            /*PageActionEnum page = (PageActionEnum)e.Parameter;
-
-            if (page == PageActionEnum.ForgetPassword)
-                App.UVApp.NavigateToPage(new ForgetPasswordPage());
-            else if (page == PageActionEnum.Register)*/
-            App.UvApp.NavigateToPage(new RegisterPage());
-
-        }
-
-        private void OnLoginButtonClicked(object sender, EventArgs e)
-        {
-            User user = new User
+            switch (obj)
             {
-                Username = UsernameEntry.Text,
-                Password = PasswordEntry.Text
-            };
+                case PageActionEnum.Login:
 
-            try
-            {
-//                var data = App.db.Table <User> ();
+                    UserModel usr = JsonConvert.DeserializeObject<UserModel>(Settings.UserJson);
 
-                var verificationUser = (App.Db.Table <User> ()).FirstOrDefault(
-                    x => x.Username.Equals(UsernameEntry.Text)); //&& x.Password == PasswordEntry.Text); //Linq Query  
+                    if (UsernameEntry.Text == usr.Username && PasswordEntry.Text == usr.Password)
+                    {
+                        if (RememberSwitch.On)
+                            Settings.IsRememberMe = true;
 
-                //                var data1 = data.FirstOrDefault(x => x.Username == UsernameEntry.Text);
-                if (verificationUser == null)
-                {
+                        App.UvApp.ChangeRoot(new BluetoothPage());
+                    }
+                    else
+                        DisplayAlert("Error", "There is no user", "OK");
 
-                    DisplayAlert("Something Wrong!", "Username or Password invalid", "OK");
-                    PasswordEntry.Text = string.Empty;
-                    return;
-                }
-                //DisplayAlert("Welcome", "Login Success", "OK"); //Bu silinecek
-                App.IsUserLoggedIn = true;
-                App.UvApp.NavigateToPage(new BluetoothPage());
+                    break;
+                case PageActionEnum.ForgetPassword:
+                    App.UvApp.NavigateToPage(new ForgetPasswordPage());
+                    break;
+                case PageActionEnum.Register:
+                    App.UvApp.NavigateToPage(new RegisterPage());
+                    break;
             }
-            catch (Exception ex)
-            {
-                DisplayAlert("Login", ex.ToString(), "OK");
-            }
-
-
-
-
-
         }
+       
 
-        /*protected bool AreCredentialsCorrect(User user)
-        {
-            return true;
-        }*/
-        /*private void SwitchDataOnChanged(object sender, ToggledEventArgs e)
-        {
-
-        }
-        protected override void OnBindingContextChanged()
-        {
-            base.OnBindingContextChanged();
-
-            if (BindingContext != null)
-            {
-                RememberSwitch.IsEnabled = IsEnabled;
-            }
-        }*/
     }
 }

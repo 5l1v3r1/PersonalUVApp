@@ -12,32 +12,26 @@ using System;
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace PersonalUVApp
 {
-    public partial class App //: Application
+    public partial class App : Application
     {
-        public static string DbName { get; set; } = "UserDb";
         public static App UvApp => Current as App;
         public static bool IsUserLoggedIn { get; set; }
-        public static SQLiteConnection Db{ get; set; }
 
-        
         public App()
         {
             InitializeComponent();
-            Db = DependencyService.Get<ISQLiteConnection>().CreateConnection();
-            Db.CreateTable<User>();
-            if (!IsUserLoggedIn)
+            //if (!IsUserLoggedIn)
+            //{
+            MainPage = new NavigationPage(new LoginPage())
             {
-                MainPage = new NavigationPage(new LoginPage())
-                {
-                    BarTextColor = Color.White,
-                    BarBackgroundColor = (Color)Resources["BarBackgroundColor"]
-                };
-            }
-            else
-            {
-                MainPage = new NavigationPage(new MainPage()); //boyle kalsin simdilik
-
-            }
+                BarTextColor = Color.White,
+                BarBackgroundColor = (Color)Resources["BarBackgroundColor"]
+            };
+            //}
+            //else
+            //{
+            //    MainPage = new NavigationPage(new LoginPage()); //boyle kalsin simdilik
+            //}
         }
 
         public async void NavigateToPage(ContentPage page, bool animation = true)
@@ -48,6 +42,8 @@ namespace PersonalUVApp
         {
             await MainPage.Navigation.PopAsync();
         }
+
+
         public void ChangeRoot(ContentPage newRoot)
         {
             MainPage = new NavigationPage(newRoot)

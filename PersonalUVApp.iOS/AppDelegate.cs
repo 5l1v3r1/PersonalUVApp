@@ -5,6 +5,8 @@ using System.Linq;
 using Foundation;
 using UIKit;
 
+using Xamarin.Forms;
+
 namespace PersonalUVApp.iOS
 {
     // The UIApplicationDelegate for the application. This class is responsible for launching the 
@@ -23,7 +25,10 @@ namespace PersonalUVApp.iOS
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             global::Xamarin.Forms.Forms.Init();
+            //LoadApplication(new App());
+
             LoadApplication(new App());
+
 
             return base.FinishedLaunching(app, options);
         }

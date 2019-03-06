@@ -1,11 +1,11 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PersonalUVApp.Pages.BluetoothPage">
     <ContentPage.Content>
         <StackLayout BackgroundColor="White">
             <Button Text="Search" Clicked="SearchDeviceBtnClicked"/>
-            <ListView x:Name="DevicesList" BackgroundColor="Blue"
+            <ListView x:Name="DevicesList" 
                       IsPullToRefreshEnabled="true"
                       CachingStrategy="RecycleElement"
                       ItemSelected="DevicesList_OnItemSelected">
@@ -13,8 +13,8 @@
                     <DataTemplate>
                         <ViewCell>
                             <StackLayout >
-                                <Label Text="Bismillah" BackgroundColor="Black"></Label>
-                                
+                                <Label Text="{Binding NativeDevice.Name}"></Label>
+                                <Label Text="{Binding NativeDevice.Address}" ></Label>
                             </StackLayout>
                         </ViewCell>
                     </DataTemplate>
