@@ -1,5 +1,4 @@
-﻿using System;
-using PersonalUVApp.Controls;
+﻿using PersonalUVApp.Controls;
 using PersonalUVApp.iOS.Renderers;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;

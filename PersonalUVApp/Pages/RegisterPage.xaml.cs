@@ -7,7 +7,7 @@ namespace PersonalUVApp.Pages
 {
     public partial class RegisterPage : ContentPage
     {
-        
+
         public RegisterPage()
         {
             InitializeComponent();
@@ -22,7 +22,7 @@ namespace PersonalUVApp.Pages
             if (AreDetailsValid())
             {
 
-               App.NewUser = new User
+                App.NewUser = new User
                 {
                     Username = UsernameEntry.Text,
                     Password = PasswordEntry.Text,
@@ -33,9 +33,9 @@ namespace PersonalUVApp.Pages
                     Location = LocationEntry.Text,
                 };
                 //                await Navigation.PopAsync();
-                
 
-                var rootPage = Navigation.NavigationStack.FirstOrDefault();
+
+                Page rootPage = Navigation.NavigationStack.FirstOrDefault();
                 if (rootPage == null) return;
                 App.IsUserLoggedIn = true;
                 Navigation.InsertPageBefore(new MainPage(), Navigation.NavigationStack.First());
