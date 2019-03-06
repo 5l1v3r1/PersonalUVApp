@@ -1,7 +1,5 @@
 ﻿using PersonalUVApp.Models;
 using System;
-using System.Linq;
-using SQLite;
 using Xamarin.Forms;
 namespace PersonalUVApp.Pages
 {
@@ -41,21 +39,13 @@ namespace PersonalUVApp.Pages
 
         private void OnLoginButtonClicked(object sender, EventArgs e)
         {
-            User user = new User
-            {
-                Username = UsernameEntry.Text,
-                Password = PasswordEntry.Text
-            };
+            //            Helper.Settings.GeneralSettings = UsernameEntry.Text;
+            //            Helper.Settings.GeneralSettings = PasswordEntry.Text;
 
             try
             {
-//                var data = App.db.Table <User> ();
-
-                var verificationUser = (App.Db.Table <User> ()).FirstOrDefault(
-                    x => x.Username.Equals(UsernameEntry.Text)); //&& x.Password == PasswordEntry.Text); //Linq Query  
-
-                //                var data1 = data.FirstOrDefault(x => x.Username == UsernameEntry.Text);
-                if (verificationUser == null)
+                bool verificationUser = Helper.Settings.GeneralSettings.Equals(UsernameEntry.Text);
+                if (!verificationUser)
                 {
 
                     DisplayAlert("Something Wrong!", "Username or Password invalid", "OK");

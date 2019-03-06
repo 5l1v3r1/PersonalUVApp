@@ -7,6 +7,7 @@ namespace PersonalUVApp.Pages
 {
     public partial class RegisterPage : ContentPage
     {
+        
         public RegisterPage()
         {
             InitializeComponent();
@@ -18,7 +19,7 @@ namespace PersonalUVApp.Pages
             if (AreDetailsValid())
             {
 
-                App.Db.Insert(new User
+               App.NewUser = new User
                 {
                     Username = UsernameEntry.Text,
                     Password = PasswordEntry.Text,
@@ -27,9 +28,10 @@ namespace PersonalUVApp.Pages
                     //                Age = Convert.ToInt32(AgeEntry.Text),
                     SkinType = SkinTypeEntry.Text,
                     Location = LocationEntry.Text,
-                });
+                };
                 //                await Navigation.PopAsync();
-
+                Helper.Settings.GeneralSettings = UsernameEntry.Text;
+                Helper.Settings.GeneralSettings = PasswordEntry.Text;
                 var rootPage = Navigation.NavigationStack.FirstOrDefault();
                 if (rootPage == null) return;
                 App.IsUserLoggedIn = true;

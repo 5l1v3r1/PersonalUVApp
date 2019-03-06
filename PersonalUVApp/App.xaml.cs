@@ -1,30 +1,22 @@
-﻿using System.Collections.ObjectModel;
-using PersonalUVApp.Helper;
-using PersonalUVApp.Models;
+﻿using PersonalUVApp.Models;
 using PersonalUVApp.Pages;
-using Plugin.BLE;
-using Plugin.BLE.Abstractions.Contracts;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using SQLite;
-using System;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace PersonalUVApp
 {
     public partial class App //: Application
     {
-        public static string DbName { get; set; } = "UserDb";
+        //        public static string DbName { get; set; } = "UserDb";
         public static App UvApp => Current as App;
         public static bool IsUserLoggedIn { get; set; }
-        public static SQLiteConnection Db{ get; set; }
+        //        public static SQLiteConnection Db { get; set; }
+        public static User NewUser { get; set; }
 
-        
         public App()
         {
             InitializeComponent();
-            Db = DependencyService.Get<ISQLiteConnection>().CreateConnection();
-            Db.CreateTable<User>();
             if (!IsUserLoggedIn)
             {
                 MainPage = new NavigationPage(new LoginPage())

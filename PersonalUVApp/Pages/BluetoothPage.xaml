@@ -3,9 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PersonalUVApp.Pages.BluetoothPage">
     <ContentPage.Content>
-        <StackLayout BackgroundColor="White">
+        <StackLayout BackgroundColor="{StaticResource PageBackgroundColor}">
             <Button Text="Search" Clicked="SearchDeviceBtnClicked"/>
-            <ListView x:Name="DevicesList" BackgroundColor="Blue"
+            <ListView x:Name="DevicesList" 
                       IsPullToRefreshEnabled="true"
                       CachingStrategy="RecycleElement"
                       ItemSelected="DevicesList_OnItemSelected">
@@ -13,8 +13,9 @@
                     <DataTemplate>
                         <ViewCell>
                             <StackLayout >
-                                <Label Text="Bismillah" BackgroundColor="Black"></Label>
-                                
+                                <Label Text="{Binding NativeDevice.Name}"></Label>
+                                <Label Text="{Binding NativeDevice.Address}" ></Label>
+                                <Label Text="{Binding NativeDevice.Rssi}" ></Label>
                             </StackLayout>
                         </ViewCell>
                     </DataTemplate>
