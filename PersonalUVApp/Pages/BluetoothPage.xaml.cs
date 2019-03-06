@@ -1,9 +1,9 @@
 ﻿using Plugin.BLE;
+using Plugin.BLE.Abstractions;
 using Plugin.BLE.Abstractions.Contracts;
 using Plugin.BLE.Abstractions.Exceptions;
 using System;
 using System.Collections.ObjectModel;
-using Plugin.BLE.Abstractions;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -13,9 +13,10 @@ namespace PersonalUVApp.Pages
     public partial class BluetoothPage
     {
         IAdapter _adapter;
-        IBluetoothLE _bluetoothLE;  
+        IBluetoothLE _bluetoothLE;
         ObservableCollection<IDevice> _deviceList;
         IDevice _device;
+
         public BluetoothPage()
         {
             InitializeComponent();
@@ -41,9 +42,9 @@ namespace PersonalUVApp.Pages
                 {
                     if (!_deviceList.Contains(a.Device))
                         _deviceList.Add(a.Device);
-                };        
-                if(!_adapter.IsScanning)
-                await _adapter.StartScanningForDevicesAsync();
+                };
+                if (!_adapter.IsScanning)
+                    await _adapter.StartScanningForDevicesAsync();
             }
         }
 
@@ -51,30 +52,41 @@ namespace PersonalUVApp.Pages
         {
             _device = DevicesList.SelectedItem as IDevice;
 
-            bool result = await DisplayAlert("Notice", "Do you want to turn on Bluetooth to discover devices", "Connect", "Cancel");
+            bool result = await DisplayAlert("Notice", "Do you want to turn on Bluetooth to discover devices",
+                "Connect", "Cancel");
 
             if (!result)
                 return;
             //Stop Scanner
             await _adapter.StopScanningForDevicesAsync();
-            
-                try
-                {
-                    Device.BeginInvokeOnMainThread(new Action(async () =>
-                        {
-                            
-                    await _adapter.ConnectToDeviceAsync(_device/*,new ConnectParameters(false)*/);}));
-                    await DisplayAlert("Connected", "Status:" + _device.State, "OK");
-                    
-                }
-                catch (DeviceConnectionException ex)
-                {
-                    await DisplayAlert("Error", ex.Message, "OK");
-                }
-           
 
+            try
+            {
+                Device.BeginInvokeOnMainThread(new Action(async () =>
+                {
+                    ConnectParameters parameters = new ConnectParameters(forceBleTransport: true);
+                    await _adapter.ConnectToDeviceAsync(_device, parameters);
+                }));
+                await DisplayAlert("Connected", "Status:" + _device.State, "OK");
 
+            }
+            catch (DeviceConnectionException ex)
+            {
+                await DisplayAlert("Error", ex.Message, "OK");
+            }
         }
+        protected override bool OnBackButtonPressed()
+        {
+            // Begin an asyncronous task on the UI thread because we intend to ask the users permission.
+            Device.BeginInvokeOnMainThread(async () =>
+            {
+                base.OnBackButtonPressed();
+                await Navigation.PopAsync();
+                
+            });
+            return true;
+        }
+
     }
 }
 //https://github.com/juucustodio/Bluetooth-Xamarin.Forms

@@ -8,7 +8,7 @@ namespace PersonalUVApp
 {
     public partial class App //: Application
     {
-        //        public static string DbName { get; set; } = "UserDb";
+        public static string DbName { get; set; } = "UserDb";
         public static App UvApp => Current as App;
         public static bool IsUserLoggedIn { get; set; }
         //        public static SQLiteConnection Db { get; set; }

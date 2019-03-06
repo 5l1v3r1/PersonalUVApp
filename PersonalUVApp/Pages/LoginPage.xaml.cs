@@ -1,4 +1,5 @@
-﻿using PersonalUVApp.Models;
+﻿using PersonalUVApp.Helper;
+using PersonalUVApp.Models;
 using System;
 using Xamarin.Forms;
 namespace PersonalUVApp.Pages
@@ -39,12 +40,29 @@ namespace PersonalUVApp.Pages
 
         private void OnLoginButtonClicked(object sender, EventArgs e)
         {
-            //            Helper.Settings.GeneralSettings = UsernameEntry.Text;
-            //            Helper.Settings.GeneralSettings = PasswordEntry.Text;
+            if (IsBusy)
+                return;
+
+            if (string.IsNullOrEmpty(UsernameEntry.Text) || string.IsNullOrEmpty(PasswordEntry.Text))
+            {
+//                Tools.ShowMessage("Kullanıcı adı veya parola alanı boş bırakılamaz!", "Hata", "Tamam");
+                return;
+            }
+            Settings.UserName = UsernameEntry.Text;
+            Settings.Password = PasswordEntry.Text;
+
+
+
+
+
+
+
+
 
             try
             {
-                bool verificationUser = Helper.Settings.GeneralSettings.Equals(UsernameEntry.Text);
+                bool verificationUser = Helper.Settings.UserName.Equals(UsernameEntry.Text) &&
+                                        Helper.Settings.Password.Equals(PasswordEntry.Text);
                 if (!verificationUser)
                 {
 
@@ -67,10 +85,7 @@ namespace PersonalUVApp.Pages
 
         }
 
-        /*protected bool AreCredentialsCorrect(User user)
-        {
-            return true;
-        }*/
+        
         /*private void SwitchDataOnChanged(object sender, ToggledEventArgs e)
         {
 

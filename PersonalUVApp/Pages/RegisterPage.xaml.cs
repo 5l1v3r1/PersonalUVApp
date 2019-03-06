@@ -16,6 +16,9 @@ namespace PersonalUVApp.Pages
 
         private async void OnRegisterButtonClicked(object sender, EventArgs e)
         {
+            if (IsBusy)
+                return;
+
             if (AreDetailsValid())
             {
 
@@ -30,8 +33,8 @@ namespace PersonalUVApp.Pages
                     Location = LocationEntry.Text,
                 };
                 //                await Navigation.PopAsync();
-                Helper.Settings.GeneralSettings = UsernameEntry.Text;
-                Helper.Settings.GeneralSettings = PasswordEntry.Text;
+                
+
                 var rootPage = Navigation.NavigationStack.FirstOrDefault();
                 if (rootPage == null) return;
                 App.IsUserLoggedIn = true;
