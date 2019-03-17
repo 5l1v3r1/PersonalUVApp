@@ -6,6 +6,15 @@
              x:Class="PersonalUVApp.Pages.LoginPage" 
              Title="Login" 
              BackgroundColor="{StaticResource PageBackgroundColor}">
+    
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style BasedOn="{StaticResource BtnMenu}" TargetType="Button" x:Key="ThisBtnMenu">
+                <Setter Property="Command" Value="{Binding NavigateCommand}" /> 
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
     <ContentPage.Content>
         <Grid>
             <Grid.RowDefinitions>
@@ -15,49 +24,29 @@
             <controls:MyTableView Intent="Settings" Margin="10,0" Grid.Row="1" VerticalOptions="CenterAndExpand">
                 <TableRoot>
                     <TableSection>
-                        <EntryCell Label="Username:" x:Name="UsernameEntry" Placeholder="Enter your name" Text="{Binding UserName}" />
-                        <EntryCell Label="Password:" x:Name="PasswordEntry" Placeholder="Enter your password" />
+                        <EntryCell Label="Username:" x:Name="UsernameEntry" Placeholder="Enter your name"  />
+                        <EntryCell Label="Password:" x:Name="PasswordEntry" Placeholder="Enter your password"  />
                         <SwitchCell Text="Remember Me" x:Name="RememberSwitch"  IsEnabled="True" />
-                                    <!-- On="{Binding Mode=TwoWay}" OnChanged="SwitchDataOnChanged" -->
                     </TableSection>
+                    
                     <TableSection>
                         <ViewCell>
-                            <Button Text="Login" 
-                                    FontAttributes="Bold"
-                                    HorizontalOptions="Fill" 
-                                    Clicked="OnLoginButtonClicked"
-                                    TextColor="White" BackgroundColor="{StaticResource ButtonBackgroundColor}">
-                                  
-                            </Button>
-                            
+                            <Button Style="{StaticResource ThisBtnMenu}" Text="Login" CommandParameter="{x:Static models:PageActionEnum.Login}" />
                         </ViewCell>
                     </TableSection>
+                    
                     <TableSection>
                         <ViewCell>
-                            <controls:UnderLineLabel Text="Forget Password" 
-                                                     LineColor="Black" HorizontalOptions="Fill">
-                                <controls:UnderLineLabel.GestureRecognizers>
-                                    <TapGestureRecognizer 
-                                                          CommandParameter="{x:Static models:PageActionEnum.ForgetPassword}" />
-                                        
-                                    
-                                </controls:UnderLineLabel.GestureRecognizers>
-                            </controls:UnderLineLabel>
+                            <Button Style="{StaticResource ThisBtnMenu}" Text="Forget Password" CommandParameter="{x:Static models:PageActionEnum.ForgetPassword}" />
                         </ViewCell>
                     </TableSection>
+                    
                     <TableSection>
                         <ViewCell >
-                            <controls:UnderLineLabel Text="Click here to Register"
-                                                     LineColor="Black" HorizontalOptions="Fill">
-                               <controls:UnderLineLabel.GestureRecognizers>
-                                    <TapGestureRecognizer Tapped="Handle_Tapped"
-                                                          CommandParameter="{x:Static models:PageActionEnum.Register}" />
-                                        
-                                    
-                                </controls:UnderLineLabel.GestureRecognizers>
-                            </controls:UnderLineLabel>
+                            <Button Style="{StaticResource ThisBtnMenu}" Text="Click Here To Register" CommandParameter="{x:Static models:PageActionEnum.Register}" />
                         </ViewCell>
                     </TableSection>
+                    
                 </TableRoot>
             </controls:MyTableView>
         </Grid>

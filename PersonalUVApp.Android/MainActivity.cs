@@ -1,6 +1,7 @@
 ﻿using System;
 
 using Android.App;
+using Acr.UserDialogs;
 using Android.Content.PM;
 using Android.Runtime;
 using Android.Views;
@@ -19,6 +20,7 @@ namespace PersonalUVApp.Droid
 
             base.OnCreate(savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
+            UserDialogs.Init(this);
             LoadApplication(new App());
         }
     }

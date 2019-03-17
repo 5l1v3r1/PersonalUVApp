@@ -40,5 +40,10 @@
     <key>NSBluetoothPeripheralUsageDescription</key>
     <string>This app should access Bluetooth</string>
     <!--BLE icin eklenen satir-->
+
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>This app should access your Location.</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>This app should access your Location..</string>
 </dict>
 </plist>

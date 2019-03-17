@@ -1,11 +1,9 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="PersonalUVApp.Pages.BluetoothPage"
-             NavigationPage.HasBackButton="False"
-             Title="Bluetooth Page">
+             x:Class="PersonalUVApp.Pages.BluetoothPage">
     <ContentPage.Content>
-        <StackLayout BackgroundColor="{StaticResource PageBackgroundColor}">
+        <StackLayout BackgroundColor="White">
             <Button Text="Search" Clicked="SearchDeviceBtnClicked"/>
             <ListView x:Name="DevicesList" 
                       IsPullToRefreshEnabled="true"
@@ -17,7 +15,6 @@
                             <StackLayout >
                                 <Label Text="{Binding NativeDevice.Name}"></Label>
                                 <Label Text="{Binding NativeDevice.Address}" ></Label>
-                                <Label Text="{Binding NativeDevice.Rssi}" ></Label>
                             </StackLayout>
                         </ViewCell>
                     </DataTemplate>

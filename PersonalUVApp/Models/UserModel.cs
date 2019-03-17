@@ -1,7 +1,9 @@
 ﻿
+using System.ComponentModel;
+
 namespace PersonalUVApp.Models
 {
-    public class User
+    public class UserModel : INotifyPropertyChanged
     {
         public int Id { get; set; }
         public string Username { get; set; }
@@ -12,5 +14,7 @@ namespace PersonalUVApp.Models
         public string SkinType { get; set; }
         public string Location { get; set; }
         public bool IsRemember { get; set; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

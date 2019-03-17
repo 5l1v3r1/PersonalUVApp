@@ -1,6 +1,7 @@
-﻿using System;
-
-using Xamarin.Forms;
+﻿using Newtonsoft.Json;
+using PersonalUVApp.Helper;
+using PersonalUVApp.Models;
+using System;
 
 namespace PersonalUVApp.Pages
 {
@@ -13,7 +14,24 @@ namespace PersonalUVApp.Pages
 
         private void ForgetPasswordAsync(object sender, EventArgs e)
         {
-            App.UvApp.NavigateToPage(new MainPage());
+            bool isSuccess = GetNewPassword();
+            if (!isSuccess)
+                return;
+            Tools.ShowMessage("Password is changed!", "Success", "OK");
+            App.UvApp.NavigateToPage(new LoginPage());
+        }
+
+        private bool GetNewPassword()
+        {
+            UserModel usr = JsonConvert.DeserializeObject<UserModel>(Settings.UserJson);
+
+            if (UsernameEntry.Text.Trim() == usr.Username && FirstNameEntry.Text.Trim() == usr.FirstName)
+            {
+                usr.Password = NewPasswordEntry.Text.Trim();
+                usr = JsonConvert.DeserializeObject<UserModel>(Settings.UserJson);
+                return true;
+            }
+            return false;
         }
     }
 }

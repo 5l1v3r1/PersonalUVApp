@@ -1,103 +1,72 @@
-﻿using PersonalUVApp.Helper;
+﻿using Newtonsoft.Json;
+using PersonalUVApp.Helper;
 using PersonalUVApp.Models;
-using System;
 using Xamarin.Forms;
+
 namespace PersonalUVApp.Pages
 {
-    public partial class LoginPage : ContentPage
+    public partial class LoginPage //: ContentPage
     {
-        public string UserName
-        {
-            get => (string)GetValue(UserNameProperty);
-            set => SetValue(UserNameProperty, value);
-        }
-
-        public static readonly BindableProperty UserNameProperty = BindableProperty.Create(nameof(UserName), typeof(string), typeof(LoginPage), default(string));
-
         public Command<PageActionEnum> NavigateCommand { protected set; get; }
 
         public LoginPage()
         {
-            NavigateCommand = new Command<PageActionEnum>(NavigatePage);
-            InitializeComponent();
-            BindingContext = this;
+            if (Settings.IsRememberMe == false)
+            {
+                InitializeComponent();
+                NavigateCommand = new Command<PageActionEnum>(NavigatePage);
+                BindingContext = this;
+            }
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+
+            if (Settings.IsRememberMe)
+            {
+                App.UvApp.ChangeRoot(new BluetoothPage());
+            }
+            else
+            {
+                if (Settings.IsUserModelSet)
+                {
+                    UserModel usr = JsonConvert.DeserializeObject<UserModel>(Settings.UserJson);
+
+                    UsernameEntry.Text = usr.Username;
+                    PasswordEntry.Text = usr.Password;
+                }
+            }
         }
 
         private void NavigatePage(PageActionEnum obj)
         {
-            Console.WriteLine(obj);
-        }
-        void Handle_Tapped(object sender, EventArgs e)
-        {
-            /*PageActionEnum page = (PageActionEnum)e.Parameter;
-
-            if (page == PageActionEnum.ForgetPassword)
-                App.UVApp.NavigateToPage(new ForgetPasswordPage());
-            else if (page == PageActionEnum.Register)*/
-            App.UvApp.NavigateToPage(new RegisterPage());
-
-        }
-
-        private void OnLoginButtonClicked(object sender, EventArgs e)
-        {
-            if (IsBusy)
-                return;
-
-            if (string.IsNullOrEmpty(UsernameEntry.Text) || string.IsNullOrEmpty(PasswordEntry.Text))
+            switch (obj)
             {
-//                Tools.ShowMessage("Kullanıcı adı veya parola alanı boş bırakılamaz!", "Hata", "Tamam");
-                return;
+                case PageActionEnum.Login:
+
+                    UserModel usr = JsonConvert.DeserializeObject<UserModel>(Settings.UserJson);
+
+                    if (UsernameEntry.Text == usr.Username && PasswordEntry.Text == usr.Password)
+                    {
+                        if (RememberSwitch.On)
+                            Settings.IsRememberMe = true;
+
+                        App.UvApp.ChangeRoot(new MainPage());//BluetoothPage
+                    }
+                    else
+                        DisplayAlert("Error", "There is no user", "OK");
+
+                    break;
+                case PageActionEnum.ForgetPassword:
+                    App.UvApp.NavigateToPage(new ForgetPasswordPage());
+                    break;
+                case PageActionEnum.Register:
+                    App.UvApp.NavigateToPage(new RegisterPage());
+                    break;
             }
-            Settings.UserName = UsernameEntry.Text;
-            Settings.Password = PasswordEntry.Text;
-
-
-
-
-
-
-
-
-
-            try
-            {
-                bool verificationUser = Helper.Settings.UserName.Equals(UsernameEntry.Text) &&
-                                        Helper.Settings.Password.Equals(PasswordEntry.Text);
-                if (!verificationUser)
-                {
-
-                    DisplayAlert("Something Wrong!", "Username or Password invalid", "OK");
-                    PasswordEntry.Text = string.Empty;
-                    return;
-                }
-                //DisplayAlert("Welcome", "Login Success", "OK"); //Bu silinecek
-                App.IsUserLoggedIn = true;
-                App.UvApp.NavigateToPage(new BluetoothPage());
-            }
-            catch (Exception ex)
-            {
-                DisplayAlert("Login", ex.ToString(), "OK");
-            }
-
-
-
-
-
         }
 
-        
-        /*private void SwitchDataOnChanged(object sender, ToggledEventArgs e)
-        {
 
-        }
-        protected override void OnBindingContextChanged()
-        {
-            base.OnBindingContextChanged();
-
-            if (BindingContext != null)
-            {
-                RememberSwitch.IsEnabled = IsEnabled;
-            }
-        }*/
     }
 }

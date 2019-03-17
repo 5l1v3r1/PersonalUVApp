@@ -1,4 +1,4 @@
-﻿using PersonalUVApp.Models;
+﻿using System;
 using Plugin.Settings;
 using Plugin.Settings.Abstractions;
 
@@ -6,33 +6,46 @@ namespace PersonalUVApp.Helper
 {
     public static class Settings
     {
-        private static ISettings AppSettings => CrossSettings.Current;
-        //static bool IsUserSet => AppSettings.Contains(nameof(User.Username));
-
-        #region Setting Constants
-
-        private const string UserNameKey = "UserName";
-        private static readonly string UserNameKeyDefault = string.Empty;
-        private const string PasswordKey = "Password";
-        private static readonly string PasswordKeyDefault = string.Empty;
-        public static bool IsUserSet => AppSettings.Contains(UserNameKey);
-        public static bool IsPasswordSet => AppSettings.Contains(PasswordKey);
-
-        #endregion
-        public static string UserName
+        private static ISettings AppSettings
         {
-            get => AppSettings.GetValueOrDefault(UserNameKey, UserNameKeyDefault);
-
-            set => AppSettings.AddOrUpdateValue(UserNameKey, value);
-
+            get
+            {
+                return CrossSettings.Current;
+            }
         }
-        public static string Password
+
+        public static bool IsUserModelSet => AppSettings.Contains(UserModelJson);
+        public static bool IsRememberMeOnSet => AppSettings.Contains(UserModelJson);
+
+        private const string UserModelJson = "UserModelJson";
+        private const string IsRememberMeOn = "IsRememberMeOn";
+
+
+        public static string UserJson
         {
-            get => AppSettings.GetValueOrDefault(PasswordKey, PasswordKeyDefault);
-
-            set => AppSettings.AddOrUpdateValue(PasswordKey, value);
-
+            get
+            {
+                return AppSettings.GetValueOrDefault(UserModelJson, "");
+            }
+            set
+            {
+                AppSettings.AddOrUpdateValue(UserModelJson, value);
+            }
         }
+
+        public static bool IsRememberMe
+        {
+            get
+            {
+                return AppSettings.GetValueOrDefault(IsRememberMeOn, false);
+            }
+            set
+            {
+                AppSettings.AddOrUpdateValue(IsRememberMeOn, value);
+            }
+        }
+
+
 
     }
 }

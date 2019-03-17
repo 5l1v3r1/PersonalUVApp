@@ -1,15 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
-             x:Class="PersonalUVApp.Pages.MainPage" BackgroundColor="Orange" 
-             Title="Main Page"
-             NavigationPage.HasBackButton="False">
+             x:Class="PersonalUVApp.Pages.MainPage" 
+             BackgroundColor="{StaticResource PageBackgroundColor}" 
+             Title="UV Index">
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Logout" Clicked="OnLogoutButtonClicked"></ToolbarItem>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
-            <Label Text="Bismillah MainPage" />
-        </StackLayout>
+        <Grid BackgroundColor="{StaticResource PageBackgroundColor}" Padding="15">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+               <Grid Grid.Row ="0">
+                   <Grid.RowDefinitions>
+                       <RowDefinition Height="*" />
+                       <RowDefinition Height="2*" />
+                   </Grid.RowDefinitions>
+                   <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                   </Grid.ColumnDefinitions>
+                   <StackLayout Grid.Row="0" Grid.Column="0" BindingContext="{Binding User}"  
+                                Margin="0,0,-5,-5"  Padding="10"
+                                BackgroundColor="White">
+                       <Label Text ="RIGHT NOW"  TextColor="ForestGreen" FontSize="Large" HorizontalTextAlignment="Start" VerticalOptions="StartAndExpand"/>
+                       <Label Text ="{Binding Location}"  TextColor="#6390F0" FontSize="Medium" VerticalOptions="EndAndExpand"/>
+                   </StackLayout>
+                   <StackLayout Grid.Row="0" Grid.Column="1"  
+                                Margin="-5,0,0,-5"  Padding="10"
+                                BackgroundColor="White">
+                       <Label Text ="TIME"  TextColor="#939393" FontSize="Medium" HorizontalTextAlignment="End"/>
+                       <Label Text ="UV INDEX"  TextColor="#939393" FontSize="Large" VerticalOptions="CenterAndExpand" HorizontalTextAlignment="End"/>
+                   </StackLayout>
+                   <StackLayout Grid.Row="1" Grid.ColumnSpan="2" Margin="0,-5,0,0" Padding="10"
+                                BackgroundColor="White" >
+                       <Label Text="A UV INDEX reading of ......." 
+                              TextColor="{StaticResource InfoTextColor}"  
+                              FontSize="Medium" 
+                              HorizontalOptions="StartAndExpand" 
+                              VerticalOptions="StartAndExpand" />
+                   </StackLayout>
+               </Grid>
+           
+
+            <StackLayout Grid.Row="1" Margin="0,10,0,0" Padding="10"
+                         BackgroundColor="White" >
+                <Label Text="Recommended Protection" 
+                       TextColor="ForestGreen" 
+                       FontSize="Large" 
+                       HorizontalOptions="StartAndExpand" 
+                       VerticalOptions="Start" />
+                <Label Text="TEXTadfsgdhfgjkhfdsaDFAFADSFA" 
+                       TextColor="{StaticResource InfoTextColor}" 
+                       FontSize="Medium" 
+                       VerticalOptions="StartAndExpand" />
+            </StackLayout>
+        </Grid>
+       
     </ContentPage.Content>
+
 </ContentPage>

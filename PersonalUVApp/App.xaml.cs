@@ -1,35 +1,23 @@
-﻿using PersonalUVApp.Models;
-using PersonalUVApp.Pages;
+﻿using PersonalUVApp.Pages;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace PersonalUVApp
 {
-    public partial class App //: Application
+    public partial class App : Application
     {
-        public static string DbName { get; set; } = "UserDb";
         public static App UvApp => Current as App;
         public static bool IsUserLoggedIn { get; set; }
-        //        public static SQLiteConnection Db { get; set; }
-        public static User NewUser { get; set; }
 
         public App()
         {
             InitializeComponent();
-            if (!IsUserLoggedIn)
+            MainPage = new NavigationPage(new LoginPage())
             {
-                MainPage = new NavigationPage(new LoginPage())
-                {
-                    BarTextColor = Color.White,
-                    BarBackgroundColor = (Color)Resources["BarBackgroundColor"]
-                };
-            }
-            else
-            {
-                MainPage = new NavigationPage(new MainPage()); //boyle kalsin simdilik
-
-            }
+                BarTextColor = Color.White,
+                BarBackgroundColor = (Color)Resources["BarBackgroundColor"]
+            };
         }
 
         public async void NavigateToPage(ContentPage page, bool animation = true)
@@ -40,6 +28,8 @@ namespace PersonalUVApp
         {
             await MainPage.Navigation.PopAsync();
         }
+
+
         public void ChangeRoot(ContentPage newRoot)
         {
             MainPage = new NavigationPage(newRoot)
