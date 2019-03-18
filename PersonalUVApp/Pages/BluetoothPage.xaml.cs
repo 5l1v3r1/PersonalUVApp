@@ -1,11 +1,14 @@
-﻿using Plugin.BLE;
-using Plugin.BLE.Abstractions;
-using Plugin.BLE.Abstractions.Contracts;
-using Plugin.BLE.Abstractions.Exceptions;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using PersonalUVApp.DepInj;
+using Plugin.BluetoothLE;
+using Plugin.Permissions;
+using Plugin.Permissions.Abstractions;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -14,85 +17,248 @@ namespace PersonalUVApp.Pages
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class BluetoothPage
     {
-        IAdapter _adapter;
-        IBluetoothLE _bluetoothLE;
-        ObservableCollection<IDevice> _deviceList;
-        IDevice _device;
-
-
+        public Command SearchDevicesCommand { protected set; get; }
 
         public BluetoothPage()
         {
             InitializeComponent();
+            SearchDevicesCommand = new Command(async () => await SearchDevicesAsync());
+
             BindingContext = this;
-
-            _bluetoothLE = CrossBluetoothLE.Current;
-            _adapter = CrossBluetoothLE.Current.Adapter;
-            _deviceList = new ObservableCollection<IDevice>();
-            DevicesList.ItemsSource = _deviceList;
         }
 
-        private async void SearchDeviceBtnClicked(object sender, EventArgs e)
+        static string GetString(byte[] bytes)
         {
-            if (_bluetoothLE.State == BluetoothState.Off)
-            {
-                await DisplayAlert("Attention", "Bluetooth disabled.", "OK");
-            }
-            else
-            {
-                BluetoothState state = _bluetoothLE.State;
-                Console.WriteLine("state:::" + state);
-                _deviceList.Clear();
-                _adapter.ScanTimeout = 10000;
-                _adapter.ScanMode = ScanMode.LowLatency;
-                _adapter.DeviceDiscovered += _adapter_DeviceDiscovered;
-
-                await _adapter.StartScanningForDevicesAsync(allowDuplicatesKey: false);
-
-            }
+            char[] chars = new char[bytes.Length / sizeof(char)];
+            System.Buffer.BlockCopy(bytes, 0, chars, 0, bytes.Length);
+            return new string(chars);
         }
 
-        void _adapter_DeviceDiscovered(object sender, Plugin.BLE.Abstractions.EventArgs.DeviceEventArgs e)
+        static string BytesToStringConverted(byte[] bytes)
         {
-            if (e.Device != null)
-                _deviceList.Add(e.Device);
-        }
-
-
-        private async void DevicesList_OnItemSelected(object sender, SelectedItemChangedEventArgs e)
-        {
-
-            if (DevicesList.SelectedItem == null)
-                return;
-
-            _device = DevicesList.SelectedItem as IDevice;
-
-            bool result = await DisplayAlert("Notice", "Do you want to turn on Bluetooth to discover devices", "Connect", "Cancel");
-
-            if (!result)
-                return;
-
-            try
+            using (var stream = new MemoryStream(bytes))
             {
-                await _adapter.StopScanningForDevicesAsync();
-
-                Device.BeginInvokeOnMainThread(async () =>
+                using (var streamReader = new StreamReader(stream))
                 {
-                    var parameters = new ConnectParameters(true,true);
-                    await _adapter.ConnectToDeviceAsync(_device, parameters);
-                });
-
-                Console.WriteLine("sadasd");
-
-                await DisplayAlert("Connected", "Status:" + _device.State, "OK");
-
+                    return streamReader.ReadToEnd();
+                }
             }
-            catch (DeviceConnectionException ex)
+        }
+
+        private async Task SearchDevicesAsync()
+        {
+
+            if (Device.RuntimePlatform == Device.Android)
             {
-                await DisplayAlert("Error", ex.Message, "OK");
+                var status = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Location);
+                if (status != PermissionStatus.Granted)
+                    await DisplayAlert("Need location", "In order to use this functionality, you must enable your gps", "OK");
+
+                var results = await CrossPermissions.Current.RequestPermissionsAsync(Permission.Location);
+                //Best practice to always check that the key exists
+                if (results.ContainsKey(Permission.Location))
+                    status = results[Permission.Location];
+
+                if (status == PermissionStatus.Granted)
+                {
+                    // Blue tooth,
+                    // gps ile açılacak
+
+                    if (CrossBleAdapter.Current.Status == AdapterStatus.PoweredOn)
+                    {
+                        Debug.WriteLine("Girdi.");
+                        try
+                        {
+                        
+                            CrossBleAdapter.Current.Scan().Subscribe(scanResult =>
+                            {
+                                Debug.WriteLine(scanResult.Device.NativeDevice + scanResult.Device.Name + " UUID: " + scanResult.Device.Uuid);
+                                if (scanResult.Device.Name == "HMSoft")
+                                {
+
+                                    // We found a device, so let's connect to it
+
+                                    CrossBleAdapter.Current.StopScan();
+                                    IDevice device = scanResult.Device;
+
+                                    device.Connect();
+
+
+
+                                    scanResult.Device.WhenAnyCharacteristicDiscovered().Subscribe(chs => {
+                                       if (chs.Uuid == new Guid("0000FFE1-0000-1000-8000-00805F9B34FB"))
+                                        {
+                                            chs.EnableNotifications().Subscribe(
+                                                result =>
+                                                {
+                                                    Debug.WriteLine(result.Data);
+                                                    chs.WhenNotificationReceived().Subscribe(res => {
+                                                        string ret = System.Text.Encoding.UTF8.GetString(res.Data);
+                                                        Device.BeginInvokeOnMainThread(() =>
+                                                        {
+                                                            lblUvIndexVal.Text = ret;
+                                                        });
+                                                        Debug.WriteLine(ret);
+                                                    });
+                                                }
+                                            );
+                                        }
+                                    });
+
+
+
+                                    //string S = Encoding.UTF8.GetString(scanResult.AdvertisementData.ServiceData);
+
+                                    // var device = CrossBleAdapter.Current.GetKnownDevice(scanResult.Device.Uuid);
+
+
+
+                                    //scanResult.Device.WhenAnyCharacteristicDiscovered().Subscribe(characteristic =>
+                                    //{
+                                    //    //characteristic.ReadInterval(TimeSpan.FromSeconds(1)).Subscribe(
+                                    //    //result => {
+                                    //    //    Debug.WriteLine(result.Data); 
+                                    //    //},
+                                    //    //exception => {
+                                    //    //    Debug.WriteLine(exception);
+                                    //    //    Debug.WriteLine(exception.Data);
+                                    //    //});
+                                    //    characteristic.Read().Subscribe(
+                                    //    result =>
+                                    //    {
+                                    //        Debug.WriteLine(result.Data);
+                                    //        Debug.WriteLine(BitConverter.ToString(result.Data));
+                                    //        Debug.WriteLine(BytesToStringConverted(result.Data));
+                                    //        Debug.WriteLine(GetString(result.Data));
+                                    //        Debug.WriteLine(System.Text.Encoding.UTF8.GetString(result.Data));
+                                    //        Debug.WriteLine(Convert.ToBase64String(result.Data));
+                                    //    },
+                                    //    exception =>
+                                    //    {
+                                    //        Debug.WriteLine(exception);
+                                    //    }
+                                    //);
+                                    //});
+
+                                    // read, write, or subscribe to notifications here
+
+
+                                    //var result = await characteristic.Read(); // use result.Data to see response
+                                    //await characteristic.Write(bytes);
+
+
+                                }
+                            });
+                        }
+                        catch (Exception ex)
+                        {
+
+                        }
+                    }
+                    else if (status != PermissionStatus.Unknown)
+                    {
+                        await DisplayAlert("Location Denied", "Can not continue, try again.", "OK");
+                    }
+                }
+
+
+                //CrossBleAdapter.Current.Scan().Subscribe(scanResult => {
+                //    Console.WriteLine("Bismillah");
+                //});
+
+                //Console.WriteLine(DependencyService.Get<IMobileDeviceManager>().IsBluetoothEnabled());
+                //Console.WriteLine(DependencyService.Get<IMobileDeviceManager>().EnableBluetooth());
             }
-            DevicesList.SelectedItem = null;
         }
     }
 }
+
+
+
+
+
+
 //https://github.com/juucustodio/Bluetooth-Xamarin.Forms
+
+
+
+
+//    IAdapter _adapter;
+//    IBluetoothLE _bluetoothLE;
+//    ObservableCollection<IDevice> _deviceList;
+//    IDevice _device;
+
+
+
+//    public BluetoothPage()
+//    {
+//        InitializeComponent();
+//        BindingContext = this;
+
+//        _bluetoothLE = CrossBluetoothLE.Current;
+//        _adapter = CrossBluetoothLE.Current.Adapter;
+//        _deviceList = new ObservableCollection<IDevice>();
+//        DevicesList.ItemsSource = _deviceList;
+//    }
+
+//    private async void SearchDeviceBtnClicked(object sender, EventArgs e)
+//    {
+//        if (_bluetoothLE.State == BluetoothState.Off)
+//        {
+//            await DisplayAlert("Attention", "Bluetooth disabled.", "OK");
+//        }
+//        else
+//        {
+//            BluetoothState state = _bluetoothLE.State;
+//            Console.WriteLine("state:::" + state);
+//            _deviceList.Clear();
+//            _adapter.ScanTimeout = 10000;
+//            _adapter.ScanMode = ScanMode.LowLatency;
+//            _adapter.DeviceDiscovered += _adapter_DeviceDiscovered;
+
+//            await _adapter.StartScanningForDevicesAsync(allowDuplicatesKey: false);
+
+//        }
+//    }
+
+//    void _adapter_DeviceDiscovered(object sender, Plugin.BLE.Abstractions.EventArgs.DeviceEventArgs e)
+//    {
+//        if (e.Device != null)
+//            _deviceList.Add(e.Device);
+//    }
+
+
+//    private async void DevicesList_OnItemSelected(object sender, SelectedItemChangedEventArgs e)
+//    {
+
+//        if (DevicesList.SelectedItem == null)
+//            return;
+
+//        _device = DevicesList.SelectedItem as IDevice;
+
+//        bool result = await DisplayAlert("Notice", "Do you want to turn on Bluetooth to discover devices", "Connect", "Cancel");
+
+//        if (!result)
+//            return;
+
+//        try
+//        {
+//            await _adapter.StopScanningForDevicesAsync();
+
+//            Device.BeginInvokeOnMainThread(async () =>
+//            {
+//                var parameters = new ConnectParameters(true,true);
+//                await _adapter.ConnectToDeviceAsync(_device, parameters);
+//            });
+
+//            Console.WriteLine("sadasd");
+
+//            await DisplayAlert("Connected", "Status:" + _device.State, "OK");
+
+//        }
+//        catch (DeviceConnectionException ex)
+//        {
+//            await DisplayAlert("Error", ex.Message, "OK");
+//        }
+//        DevicesList.SelectedItem = null;
+//    }

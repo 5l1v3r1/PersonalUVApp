@@ -11,18 +11,20 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
-    <PackageReference Include="Plugin.BLE" Version="1.3.0" />
     <PackageReference Include="sqlite-net-pcl" Version="1.5.231" />
     <PackageReference Include="System.Runtime.WindowsRuntime.UI.Xaml" Version="4.3.0" />
     <PackageReference Include="Xamarin.Forms" Version="3.5.0.169047" />
     <PackageReference Include="PropertyChanged.Fody" Version="2.6.0" />
     <PackageReference Include="Fody" Version="4.0.2" />
     <PackageReference Include="Xam.Plugins.Settings" Version="3.1.1" />
+    <PackageReference Include="Plugin.BluetoothLE" Version="6.2.3" />
+    <PackageReference Include="Plugin.Permissions" Version="3.0.0.12" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controls\" />
     <Folder Include="Converters\" />
     <Folder Include="Models\" />
+    <Folder Include="DepInj\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Pages\Deneme.cs" />
@@ -36,5 +38,8 @@
     <EmbeddedResource Update="Pages\BluetoothPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Windows, Version=255.255.255.255, Culture=neutral, PublicKeyToken=null, ContentType=WindowsRuntime" />
   </ItemGroup>
 </Project>

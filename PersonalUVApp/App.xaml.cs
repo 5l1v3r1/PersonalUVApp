@@ -2,8 +2,6 @@
 using PersonalUVApp.Helper;
 using PersonalUVApp.Models;
 using PersonalUVApp.Pages;
-using Plugin.BLE;
-using Plugin.BLE.Abstractions.Contracts;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using SQLite;
@@ -20,9 +18,12 @@ namespace PersonalUVApp
         public App()
         {
             InitializeComponent();
+
+
+
             //if (!IsUserLoggedIn)
             //{
-            MainPage = new NavigationPage(new LoginPage())
+            MainPage = new NavigationPage(new BluetoothPage())
             {
                 BarTextColor = Color.White,
                 BarBackgroundColor = (Color)Resources["BarBackgroundColor"]

@@ -4,22 +4,8 @@
              x:Class="PersonalUVApp.Pages.BluetoothPage">
     <ContentPage.Content>
         <StackLayout BackgroundColor="White">
-            <Button Text="Search" Clicked="SearchDeviceBtnClicked"/>
-            <ListView x:Name="DevicesList" 
-                      IsPullToRefreshEnabled="true"
-                      CachingStrategy="RecycleElement"
-                      ItemSelected="DevicesList_OnItemSelected">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <StackLayout >
-                                <Label Text="{Binding NativeDevice.Name}"></Label>
-                                <Label Text="{Binding NativeDevice.Address}" ></Label>
-                            </StackLayout>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+            <Button Text="Scan Devices" Command="{Binding SearchDevicesCommand}" />
+            <Label x:Name="lblUvIndexVal" HorizontalTextAlignment="Center" VerticalOptions="Center" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
