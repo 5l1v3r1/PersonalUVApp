@@ -25,11 +25,11 @@ namespace PersonalUVApp.Droid.Implementations
         {
             LocationManager locationManager = (LocationManager)Android.App.Application.Context.GetSystemService(Context.LocationService);
 
-            //if (locationManager.IsProviderEnabled(LocationManager.GpsProvider) == false)
-            //{
-            //    Intent gpsSettingIntent = new Intent(Settings.ActionLocationSourceSettings);
-            //    Forms.Context.StartActivity(gpsSettingIntent);
-            //}
+            if (locationManager.IsProviderEnabled(LocationManager.GpsProvider) == false)
+            {
+                Intent gpsSettingIntent = new Intent(Android.Provider.Settings.ActionLocationSourceSettings);
+                Android.App.Application.Context.StartActivity(gpsSettingIntent);
+            }
             /*
             var permissionState = ContextCompat.CheckSelfPermission(Android.App.Application.Context as MainActivity, Manifest.Permission.AccessCoarseLocation);
             permissionState == (int)Permission.Granted;

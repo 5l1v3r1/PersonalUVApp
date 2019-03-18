@@ -61,6 +61,8 @@ namespace PersonalUVApp.Pages
 
                 if (status == PermissionStatus.Granted)
                 {
+                    DependencyService.Get<IMobileDeviceManager>().EnableGps();
+                    DependencyService.Get<IMobileDeviceManager>().EnableBluetooth();
                     // Blue tooth,
                     // gps ile açılacak
 
@@ -75,15 +77,10 @@ namespace PersonalUVApp.Pages
                                 Debug.WriteLine(scanResult.Device.NativeDevice + scanResult.Device.Name + " UUID: " + scanResult.Device.Uuid);
                                 if (scanResult.Device.Name == "HMSoft")
                                 {
-
-                                    // We found a device, so let's connect to it
-
                                     CrossBleAdapter.Current.StopScan();
                                     IDevice device = scanResult.Device;
 
                                     device.Connect();
-
-
 
                                     scanResult.Device.WhenAnyCharacteristicDiscovered().Subscribe(chs => {
                                        if (chs.Uuid == new Guid("0000FFE1-0000-1000-8000-00805F9B34FB"))
@@ -104,49 +101,6 @@ namespace PersonalUVApp.Pages
                                             );
                                         }
                                     });
-
-
-
-                                    //string S = Encoding.UTF8.GetString(scanResult.AdvertisementData.ServiceData);
-
-                                    // var device = CrossBleAdapter.Current.GetKnownDevice(scanResult.Device.Uuid);
-
-
-
-                                    //scanResult.Device.WhenAnyCharacteristicDiscovered().Subscribe(characteristic =>
-                                    //{
-                                    //    //characteristic.ReadInterval(TimeSpan.FromSeconds(1)).Subscribe(
-                                    //    //result => {
-                                    //    //    Debug.WriteLine(result.Data); 
-                                    //    //},
-                                    //    //exception => {
-                                    //    //    Debug.WriteLine(exception);
-                                    //    //    Debug.WriteLine(exception.Data);
-                                    //    //});
-                                    //    characteristic.Read().Subscribe(
-                                    //    result =>
-                                    //    {
-                                    //        Debug.WriteLine(result.Data);
-                                    //        Debug.WriteLine(BitConverter.ToString(result.Data));
-                                    //        Debug.WriteLine(BytesToStringConverted(result.Data));
-                                    //        Debug.WriteLine(GetString(result.Data));
-                                    //        Debug.WriteLine(System.Text.Encoding.UTF8.GetString(result.Data));
-                                    //        Debug.WriteLine(Convert.ToBase64String(result.Data));
-                                    //    },
-                                    //    exception =>
-                                    //    {
-                                    //        Debug.WriteLine(exception);
-                                    //    }
-                                    //);
-                                    //});
-
-                                    // read, write, or subscribe to notifications here
-
-
-                                    //var result = await characteristic.Read(); // use result.Data to see response
-                                    //await characteristic.Write(bytes);
-
-
                                 }
                             });
                         }
