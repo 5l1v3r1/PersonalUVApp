@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Acr.UserDialogs;
 using PersonalUVApp.DepInj;
 using Plugin.BluetoothLE;
 using Plugin.Permissions;
@@ -18,13 +20,27 @@ namespace PersonalUVApp.Pages
     public partial class BluetoothPage
     {
         public Command SearchDevicesCommand { protected set; get; }
+        public Command ReadFileCommand { protected set; get; }
+
+
+
 
         public BluetoothPage()
         {
             InitializeComponent();
             SearchDevicesCommand = new Command(async () => await SearchDevicesAsync());
+            ReadFileCommand = new Command(() => ReadFileAsync());
 
             BindingContext = this;
+        }
+
+        private void ReadFileAsync()
+        {
+            var assembly = IntrospectionExtensions.GetTypeInfo(typeof(BluetoothPage)).Assembly;
+            foreach (var res in assembly.GetManifestResourceNames())
+            {
+                System.Diagnostics.Debug.WriteLine("found resource: " + res);
+            }
         }
 
         static string GetString(byte[] bytes)
@@ -45,9 +61,11 @@ namespace PersonalUVApp.Pages
             }
         }
 
+
+        private int readerId = 1;
+
         private async Task SearchDevicesAsync()
         {
-
             if (Device.RuntimePlatform == Device.Android)
             {
                 var status = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Location);
@@ -63,21 +81,22 @@ namespace PersonalUVApp.Pages
                 {
                     DependencyService.Get<IMobileDeviceManager>().EnableGps();
                     DependencyService.Get<IMobileDeviceManager>().EnableBluetooth();
-                    // Blue tooth,
-                    // gps ile açılacak
 
                     if (CrossBleAdapter.Current.Status == AdapterStatus.PoweredOn)
                     {
                         Debug.WriteLine("Girdi.");
+
+                        UserDialogs.Instance.ShowLoading();
                         try
                         {
-                        
-                            CrossBleAdapter.Current.Scan().Subscribe(scanResult =>
+                            CrossBleAdapter.Current.Scan(new ScanConfig {ScanType = BleScanType.Balanced }).Subscribe(scanResult =>
                             {
                                 Debug.WriteLine(scanResult.Device.NativeDevice + scanResult.Device.Name + " UUID: " + scanResult.Device.Uuid);
                                 if (scanResult.Device.Name == "HMSoft")
                                 {
                                     CrossBleAdapter.Current.StopScan();
+                                    UserDialogs.Instance.HideLoading();
+
                                     IDevice device = scanResult.Device;
 
                                     device.Connect();
@@ -93,7 +112,7 @@ namespace PersonalUVApp.Pages
                                                         string ret = System.Text.Encoding.UTF8.GetString(res.Data);
                                                         Device.BeginInvokeOnMainThread(() =>
                                                         {
-                                                            lblUvIndexVal.Text = ret;
+                                                            //lblUvIndexVal.Text = ret;
                                                         });
                                                         Debug.WriteLine(ret);
                                                     });
@@ -106,7 +125,12 @@ namespace PersonalUVApp.Pages
                         }
                         catch (Exception ex)
                         {
-
+                            UserDialogs.Instance.Alert(ex.Message);
+                        }
+                        finally
+                        {
+                            //CrossBleAdapter.Current.StopScan();
+                            UserDialogs.Instance.HideLoading();
                         }
                     }
                     else if (status != PermissionStatus.Unknown)
@@ -115,14 +139,25 @@ namespace PersonalUVApp.Pages
                     }
                 }
 
+                /*
+               Random rnd = new Random();
+               string fileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "values.txt");
 
-                //CrossBleAdapter.Current.Scan().Subscribe(scanResult => {
-                //    Console.WriteLine("Bismillah");
-                //});
+               for (int i = 0; i < 100; i++)
+               {
+                   await Task.Delay(10);
 
-                //Console.WriteLine(DependencyService.Get<IMobileDeviceManager>().IsBluetoothEnabled());
-                //Console.WriteLine(DependencyService.Get<IMobileDeviceManager>().EnableBluetooth());
+                   string values = $"Reader-ID: {readerId}, Time: {DateTime.Now}, Value: { rnd.Next(8,12) } \n";
+
+                   File.AppendAllText(fileName, values);
+               }
+
+               Console.WriteLine(File.ReadAllText(fileName));
+               */
+
+              
             }
+
         }
     }
 }

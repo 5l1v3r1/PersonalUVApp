@@ -1,16 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:controls="clr-namespace:PersonalUVApp.Controls;assembly=PersonalUVApp"
-             x:Class="PersonalUVApp.Pages.RegisterPage"
-             x:helper="clr-namespace:PersonalUVApp.Helper"
-             Title="Register"
-             BackgroundColor="{StaticResource PageBackgroundColor}">
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:controls="clr-namespace:PersonalUVApp.Controls;assembly=PersonalUVApp" x:Class="PersonalUVApp.Pages.RegisterPage" x:helper="clr-namespace:PersonalUVApp.Helper" Title="Register" BackgroundColor="{StaticResource PageBackgroundColor}">
     <ContentPage.Content>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
+        <Grid Margin="20,20,20,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="60" />
+                </Grid.RowDefinitions>
+                <Grid RowSpacing="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50" />
+                        <RowDefinition Height="50" />
+                        <RowDefinition Height="50" />
+                        <RowDefinition Height="50" />
+                        <RowDefinition Height="50" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Entry Placeholder="Username" PlaceholderColor="#bababa" Text="{Binding Username}" FontSize="16" />
+                    <Entry Grid.Row="1" Placeholder="Password" PlaceholderColor="#bababa" Text="{Binding Password}" FontSize="16" />
+                    <Entry Grid.Row="2" Placeholder="First Name" PlaceholderColor="#bababa" Text="{Binding FirstName}" FontSize="16" />
+                    <Entry Grid.Row="3" Placeholder="Last Name" PlaceholderColor="#bababa" Text="{Binding LastName}" FontSize="16" />
+                    <Entry Grid.Row="4" Placeholder="Age" PlaceholderColor="#bababa" Text="{Binding Age}" FontSize="16" />
+                    <Grid Grid.Row="5" BackgroundColor="#EEEEEE">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Button Text="Fair" BackgroundColor="#00bfa5" TextColor="White" x:Name="btnFairSkin" Clicked="OnSkinTypeClicked" />
+                        <Button Text="Normal" BackgroundColor="#00bfa5" TextColor="White" x:Name="btnNormalSkin" Grid.Column="1" Clicked="OnSkinTypeClicked" />
+                        <Button Text="Dark" BackgroundColor="#00bfa5" TextColor="White" x:Name="btnDarkSkin" Grid.Column="2" Clicked="OnSkinTypeClicked" />
+                    </Grid>
+                    <Button Grid.Row="6" 
+                            TextColor="White"
+                            BackgroundColor="#f57c00"
+                            x:Name="btnGetMyLocation" Text="Get My Location" Clicked="Location_Button_OnClicked">
+                    </Button>
+                </Grid>
+                <Button Grid.Row="1"
+                        Margin="0,0,0,10"  Command="{Binding LoginCommand}" Text="Sign Up" BackgroundColor="#3897F0" TextColor="White" />
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
+<!--
             <controls:MyTableView Intent="Settings" Margin="10,0" Grid.Row="1" VerticalOptions="CenterAndExpand">
                 <TableRoot>
                     <TableSection BindingContext="{Binding User}">
@@ -19,7 +54,6 @@
                         <EntryCell Label="First Name:" Text="{Binding FirstName}" />
                         <EntryCell Label="Last Name:" Text="{Binding LastName}" />
                         <EntryCell Label="Age:" Text="{Binding Age}" />
-                        <EntryCell Label="Skin Type:" Text="{Binding SkinType}" />
                         <ViewCell>
                             <Grid BackgroundColor="#EEEEEE">
                                 <Grid.RowDefinitions>
@@ -31,15 +65,14 @@
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
                                 
-                                <Button Text="Type1" />
-                                <Button Text="Type2" Grid.Column="1" />
-                                <Button Text="Type3" Grid.Column="2" />
-                                
+                                <Button Text="Fair" x:Name="btnFairSkin" Clicked="OnSkinTypeClicked" />
+                                <Button Text="Normal" x:Name="btnNormalSkin" Grid.Column="1" Clicked="OnSkinTypeClicked" />
+                                <Button Text="Dark" x:Name="btnDarkSkin" Grid.Column="2" Clicked="OnSkinTypeClicked" />
                             </Grid>
                         </ViewCell>
                         
                         <ViewCell>
-                            <Button Text="Get My Location" />
+                            <Button x:Name="btnGetMyLocation" Text="Get My Location" Clicked="Location_Button_OnClicked"></Button>
                         </ViewCell>
                         
                     </TableSection>
@@ -48,12 +81,9 @@
                             <Button Style="{StaticResource BtnMenu}"
                                     Text="Register"
                                     Command="{Binding RegisterCommand}">
-                                <!-- https://docs.microsoft.com/en-us/xamarin/xamarin-forms/app-fundamentals/triggers -->
                                 </Button>
                         </ViewCell>
                     </TableSection>
                 </TableRoot>
             </controls:MyTableView>
-        </Grid>
-    </ContentPage.Content>
-</ContentPage>
+        -->

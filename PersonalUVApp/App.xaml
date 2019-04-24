@@ -8,6 +8,8 @@
             <Color x:Key="BarBackgroundColor">#d4802c</Color>
             <Color x:Key="ButtonBackgroundColor">#4cd964</Color>
             <Color x:Key="PageBackgroundColor">#efeff4</Color>
+            <Color x:Key="InfoTextColor">#868686</Color>
+
             
             <converters:NameToColorConverter x:Key="NameToColorConverter" />
             
@@ -16,9 +18,7 @@
                 <Setter Property="HorizontalOptions" Value="Fill" /> 
                 <Setter Property="TextColor" Value="White" /> 
                 <Setter Property="BackgroundColor" Value="{StaticResource ButtonBackgroundColor}" /> 
-                
             </Style>
-            
             
         </ResourceDictionary>
         

@@ -5,21 +5,61 @@ using SQLite;
 using Xamarin.Forms;
 using PersonalUVApp.Helper;
 using Newtonsoft.Json;
+using Acr.UserDialogs;
 
 namespace PersonalUVApp.Pages
 {
     public partial class LoginPage : ContentPage
     {
-        public Command<PageActionEnum> NavigateCommand { protected set; get; }
+        //public Command<PageActionEnum> NavigateCommand { protected set; get; }
+
+        public Command LoginCommand { protected set; get; }
+        public Command ForgotPasswordCommand { protected set; get; }
+        public Command RegisterCommand { protected set; get; }
+
 
         public LoginPage()
         {
+            NavigationPage.SetHasNavigationBar(this, false);
             if (Settings.IsRememberMe == false)
             {
                 InitializeComponent();
-                NavigateCommand = new Command<PageActionEnum>(NavigatePage);
+                LoginCommand = new Command(Login);
+                ForgotPasswordCommand = new Command(ForgotPassword);
+                RegisterCommand = new Command(Register);
+                //NavigateCommand = new Command<PagForgotPassword);
                 BindingContext = this;
             }
+        }
+
+        private void Register(object obj)
+        {
+            App.UvApp.NavigateToPage(new RegisterPage());
+        }
+
+        private void ForgotPassword(object obj)
+        {
+            App.UvApp.NavigateToPage(new ForgetPasswordPage());
+        }
+
+        private void Login(object obj)
+        {
+            UserModel usr = JsonConvert.DeserializeObject<UserModel>(Settings.UserJson);
+
+            if (usr == null)
+            {
+                UserDialogs.Instance.Alert("Username is not valid!");
+                return;
+            }
+
+            if (UsernameEntry.Text == usr.Username && PasswordEntry.Text == usr.Password)
+            {
+                Settings.IsRememberMe = true;
+
+                App.UvApp.ChangeRoot(new MainPage());
+            }
+            else
+                DisplayAlert("Error", "There is no user", "OK");
         }
 
         protected override void OnAppearing()
@@ -28,7 +68,7 @@ namespace PersonalUVApp.Pages
 
             if (Settings.IsRememberMe)
             {
-                App.UvApp.ChangeRoot(new BluetoothPage());
+                App.UvApp.ChangeRoot(new MainPage());
             }
             else
             {
@@ -50,12 +90,17 @@ namespace PersonalUVApp.Pages
 
                     UserModel usr = JsonConvert.DeserializeObject<UserModel>(Settings.UserJson);
 
+                    if (usr == null)
+                    {
+                        UserDialogs.Instance.Alert("Username is not valid!");
+                        return;
+                    }
+
                     if (UsernameEntry.Text == usr.Username && PasswordEntry.Text == usr.Password)
                     {
-                        if (RememberSwitch.On)
-                            Settings.IsRememberMe = true;
+                        Settings.IsRememberMe = true;
 
-                        App.UvApp.ChangeRoot(new BluetoothPage());
+                        App.UvApp.ChangeRoot(new MainPage());
                     }
                     else
                         DisplayAlert("Error", "There is no user", "OK");

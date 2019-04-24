@@ -1,12 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
-             xmlns:models="clr-namespace:PersonalUVApp.Models"
-             xmlns:controls="clr-namespace:PersonalUVApp.Controls" 
-             x:Class="PersonalUVApp.Pages.LoginPage" 
-             Title="Login" 
-             BackgroundColor="{StaticResource PageBackgroundColor}">
-    
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:models="clr-namespace:PersonalUVApp.Models" xmlns:controls="clr-namespace:PersonalUVApp.Controls" x:Class="PersonalUVApp.Pages.LoginPage" Title="Login" BackgroundColor="{StaticResource PageBackgroundColor}">
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness">
+            <On Platform="Android">0,0,0,0</On>
+            <On Platform="iOS">0,20,0,0</On>
+        </OnPlatform>
+    </ContentPage.Padding>
+    <ContentPage.Content>
+        <Grid BackgroundColor="White">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="50" />
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" Margin="20,0,20,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="50" />
+                    <RowDefinition Height="50" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="40" />
+                    <RowDefinition Height="40" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Image Source="loginLogo.png" HeightRequest="50" VerticalOptions="End" />
+                <Entry x:Name="UsernameEntry" Grid.Row="1" Placeholder="Username" PlaceholderColor="#bababa" FontSize="16" />
+                <Entry x:Name="PasswordEntry" Grid.Row="2" Placeholder="Password" PlaceholderColor="#bababa" FontSize="16" />
+                <Button AutomationId="LoginButton" Command="{Binding LoginCommand}" Text="Log In" BackgroundColor="#3897F0" TextColor="White" HeightRequest="50" VerticalOptions="Start" Grid.Row="3" />
+                <Grid Grid.Row="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Label BackgroundColor="#bababa" HeightRequest="1" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding LoginCommand}" NumberOfTapsRequired="1" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                    <Label Text="OR" Grid.Column="1" VerticalOptions="Center" Margin="10,0,10,0" />
+                    <Label BackgroundColor="#bababa" Grid.Column="2" HeightRequest="1" HorizontalOptions="FillAndExpand" VerticalOptions="Center" />
+                </Grid>
+                <Label Grid.Row="5" HorizontalTextAlignment="Center" Text="I forgot my password!" TextColor="#485992">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ForgotPasswordCommand}" NumberOfTapsRequired="1" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </Grid>
+            <StackLayout Grid.Row="1" BackgroundColor="#FFFFFF">
+                <Label HeightRequest="1" BackgroundColor="#E3E3E3" />
+                <Label Text="Don't have an account? Sign up." VerticalOptions="FillAndExpand" VerticalTextAlignment="Center" HorizontalTextAlignment="Center">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding RegisterCommand}" NumberOfTapsRequired="1" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </StackLayout>
+        </Grid>
+    </ContentPage.Content>
+    <!--
     <ContentPage.Resources>
         <ResourceDictionary>
             <Style BasedOn="{StaticResource BtnMenu}" TargetType="Button" x:Key="ThisBtnMenu">
@@ -51,4 +102,5 @@
             </controls:MyTableView>
         </Grid>
     </ContentPage.Content>
+    -->
 </ContentPage>

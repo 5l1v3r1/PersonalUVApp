@@ -19,19 +19,17 @@ namespace PersonalUVApp
         {
             InitializeComponent();
 
-
-
             //if (!IsUserLoggedIn)
             //{
-            MainPage = new NavigationPage(new BluetoothPage())
-            {
-                BarTextColor = Color.White,
-                BarBackgroundColor = (Color)Resources["BarBackgroundColor"]
-            };
+            //    MainPage = new NavigationPage(new MainPage())
+            //    {
+            //        BarTextColor = Color.White,
+            //        BarBackgroundColor = (Color)Resources["BarBackgroundColor"]
+            //    };
             //}
             //else
             //{
-            //    MainPage = new NavigationPage(new LoginPage()); //boyle kalsin simdilik
+               MainPage = new NavigationPage(new LoginPage()); //boyle kalsin simdilik
             //}
         }
 

@@ -9,6 +9,7 @@ using Android.OS;
 using Android;
 using Plugin.Permissions;
 using Plugin.CurrentActivity;
+using Acr.UserDialogs;
 
 namespace PersonalUVApp.Droid
 {
@@ -22,6 +23,8 @@ namespace PersonalUVApp.Droid
 
             base.OnCreate(savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
+
+            UserDialogs.Init(this);
 
             CrossCurrentActivity.Current.Init(this, savedInstanceState);
 
