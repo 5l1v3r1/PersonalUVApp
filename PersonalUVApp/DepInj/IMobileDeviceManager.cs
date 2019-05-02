@@ -5,5 +5,6 @@ namespace PersonalUVApp.DepInj
     {
         void EnableBluetooth();
         void EnableGps();
+        void CloseApp();
     }
 }

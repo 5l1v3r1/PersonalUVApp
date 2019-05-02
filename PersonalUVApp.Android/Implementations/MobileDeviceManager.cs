@@ -1,11 +1,13 @@
 ﻿using System;
 using Android;
+using Android.App;
 using Android.Bluetooth;
 using Android.Content;
 using Android.Locations;
 using Android.OS;
 using Android.Support.V4.App;
 using Android.Support.V4.Content;
+using Java.Lang;
 using PersonalUVApp.DepInj;
 using PersonalUVApp.Droid.Implementations;
 
@@ -14,6 +16,11 @@ namespace PersonalUVApp.Droid.Implementations
 {
     public class MobileDeviceManager : IMobileDeviceManager
     {
+        public void CloseApp()
+        {
+            JavaSystem.Exit(0);
+        }
+
         public void EnableBluetooth()
         {
             BluetoothAdapter bluetoothAdapter = BluetoothAdapter.DefaultAdapter;
