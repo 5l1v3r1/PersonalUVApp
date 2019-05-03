@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+
+<resources>
+  <string name="channel_name">Personal UV App</string>
+  <string name="channel_description">Info about UV Index</string>
+</resources>

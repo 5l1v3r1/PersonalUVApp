@@ -93,6 +93,9 @@
     <PackageReference Include="Acr.UserDialogs">
       <Version>7.0.4</Version>
     </PackageReference>
+    <PackageReference Include="Xam.Plugins.Notifier">
+      <Version>3.0.1</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainActivity.cs" />
@@ -101,6 +104,9 @@
     <Compile Include="Renderers\MyTableViewRenderer.cs" />
     <Compile Include="Implementations\MobileDeviceManager.cs" />
     <Compile Include="Renderers\TextViewCustomRenderer.cs" />
+    <Compile Include="Implementations\SetAlarmImplementation.cs" />
+    <Compile Include="AlarmReceiver.cs" />
+    <Compile Include="AppStickyService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -126,6 +132,12 @@
     <AndroidResource Include="Resources\mipmap-xxxhdpi\launcher_foreground.png" />
     <AndroidResource Include="Resources\drawable\loginLogo.png" />
     <AndroidResource Include="Resources\drawable\rounded_corners.xml" />
+    <AndroidResource Include="Resources\drawable\alarm.png" />
+    <AndroidResource Include="Resources\drawable\alarmxx.png" />
+    <AndroidResource Include="Resources\drawable\alarmx.png" />
+    <AndroidResource Include="Resources\drawable\notifyicon.png" />
+    <AndroidResource Include="Resources\values\String.xml" />
+    <AndroidResource Include="Resources\drawable\notifyicon24.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\drawable-hdpi\" />

@@ -23,6 +23,7 @@
     <PackageReference Include="Acr.UserDialogs" Version="7.0.4" />
     <PackageReference Include="Plugin.BluetoothLE" Version="6.2.3" />
     <PackageReference Include="Xamarin.Essentials" Version="1.1.0" />
+    <PackageReference Include="Xam.Plugins.Notifier" Version="3.0.1" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controls\" />

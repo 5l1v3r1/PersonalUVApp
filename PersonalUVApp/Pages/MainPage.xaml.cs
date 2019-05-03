@@ -43,8 +43,8 @@ namespace PersonalUVApp.Pages
             info.Add(3, "A UV Index reading of 0 to 2 means low danger from the sun\\'s UV rays for the average person.");
             info.Add(6, "A UV Index reading of 3 to 5 means moderate risk of harm from unprotected sun exposure.");
             info.Add(8, "A UV Index reading of 6 to 7 means high risk of harm from unprotected sun exposure. Protection against skin and eye damage is needed.");
-            info.Add(11, "A UV Index reading of 8 to 10 means very high risk of harm from unprotected sun exposure. Take extra precautions because unprotected skin and eyes will be damaged and can burn quickly.");
             info.Add(20, "A UV Index reading of 11 or more means extreme risk of harm from unprotected sun exposure. Take all precautions because unprotected skin and eyes can burn in minutes.");
+            info.Add(11, "A UV Index reading of 8 to 10 means very high risk of harm from unprotected sun exposure. Take extra precautions because unprotected skin and eyes will be damaged and can burn quickly.");
 
             recommendedProtection.Add(3, "Wear sunglasses on bright days. If you burn easily, cover up and use broad spectrum SPF 30+ sunscreen. Bright surfaces, such as sand, water and snow, will increase UV exposure.");
             recommendedProtection.Add(6, "Stay in shade near midday when the sun is strongest. If outdoors, wear sun protective clothing, a wide-brimmed hat, and UV-blocking sunglasses. Generously apply broad spectrum SPF 30+ sunscreen every 2 hours, even on cloudy days, and after swimming or sweating. Bright surfaces, such as sand, water and snow, will increase UV exposure.");
@@ -86,6 +86,13 @@ namespace PersonalUVApp.Pages
 
                     DependencyService.Get<IMobileDeviceManager>().EnableBluetooth();
 
+
+                    //lblUvIndex.Text = "2.01";
+                    //lblTemp.Text = "28";
+                    //lblHum.Text = "45";
+                    //lblTime.Text = DateTime.Now.ToString("HH:mm:ss");
+
+                    //MapIndexValueToTexts("2.01");
 
                     try
                     {
@@ -133,7 +140,7 @@ namespace PersonalUVApp.Pages
                                 });
                             }
                         });
-                        }
+                    }
                     catch (Exception ex)
                     {
                         UserDialogs.Instance.Alert(ex.Message);
@@ -157,13 +164,6 @@ namespace PersonalUVApp.Pages
                         });
 
                     }
-                    finally
-                    {
-                   
-                        //CrossBleAdapter.Current.StopScan();
-                        //UserDialogs.Instance.HideLoading();
-                    }
-
                 }
                 else if (status != PermissionStatus.Unknown)
                 {
@@ -206,7 +206,7 @@ namespace PersonalUVApp.Pages
 
                 aiUvIndexMeans.IsVisible = false;
                 aiRecommendProtection.IsVisible = false;
-                lblCautionaryNotes.IsVisible = false;
+                aiCautionary.IsVisible = false;
 
                 lblUvIndexMeans.IsVisible = true;
                 lblRecommendProtection.IsVisible = true;
@@ -294,6 +294,11 @@ namespace PersonalUVApp.Pages
             {
                 UserDialogs.Instance.Alert("There is no internet connection!", "Error", "Ok");
             }
+        }
+
+        void GoToSetAlarmPage(object sender, System.EventArgs e)
+        {
+            App.UvApp.NavigateToPage(new AlarmPage(lblUvIndexMeans.Text, lblRecommendProtection.Text));
         }
 
         void OnParallaxScrollScrolled(object sender, ScrolledEventArgs e)

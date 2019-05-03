@@ -9,7 +9,7 @@
         </ToolbarItem>
         <ToolbarItem Text="Change Location" Order="Secondary" Clicked="ChangeLocationAsync" >
         </ToolbarItem>
-        <ToolbarItem Text="Set Alarm" Order="Secondary">
+        <ToolbarItem Text="Set Alarm" Order="Secondary" Clicked="GoToSetAlarmPage" >
         </ToolbarItem>
         <ToolbarItem Text="Logout" Order="Secondary" Clicked="OnLogoutButtonClicked">
         </ToolbarItem>
