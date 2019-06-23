@@ -11,12 +11,22 @@
             
             <Image Source="alarmxx.png"  />
             
-            <Label Text="Set Alarm to Notify" HorizontalOptions="Center" />
+            <Label Text="Set Alarm" HorizontalOptions="Center" />
             
-            <TimePicker HorizontalOptions="Center" />
+            <TimePicker 
+            x:Name="tpAlarm"
+            HorizontalOptions="Center" />
         
-            <Button Text="Set" 
+            <Button Text="Set Alarm" 
                     Clicked="CreateAlarm"
+                    BackgroundColor="#3897F0" TextColor="White" />
+            
+            <TimePicker 
+            x:Name="tpNotificationAlarm"
+            HorizontalOptions="Center" />
+            
+            <Button Text="Set Notification Alarm" 
+                    Clicked="CreateNotificationAlarm"
                     BackgroundColor="#3897F0" TextColor="White" />
             
         </StackLayout>

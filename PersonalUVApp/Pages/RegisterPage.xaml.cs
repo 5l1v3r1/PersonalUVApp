@@ -34,7 +34,6 @@ namespace PersonalUVApp.Pages
                 FirstName = "",
                 LastName = "",
                 Age = "",
-
             };
             InitializeComponent();
 
@@ -82,12 +81,11 @@ namespace PersonalUVApp.Pages
 
         private async void OnRegisterButtonClicked(object sender, EventArgs e)
         {
-
-                var rootPage = Navigation.NavigationStack.FirstOrDefault();
-                if (rootPage == null) return;
-                App.IsUserLoggedIn = true;
-                Navigation.InsertPageBefore(new MainPage(), Navigation.NavigationStack.First());
-                await Navigation.PopToRootAsync();
+            var rootPage = Navigation.NavigationStack.FirstOrDefault();
+            if (rootPage == null) return;
+            App.IsUserLoggedIn = true;
+            Navigation.InsertPageBefore(new MainPage(), Navigation.NavigationStack.First());
+            await Navigation.PopToRootAsync();
         }
 
         private async void Location_Button_OnClicked(object obj, EventArgs e)

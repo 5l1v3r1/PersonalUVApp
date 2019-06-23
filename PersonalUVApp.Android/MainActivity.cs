@@ -10,6 +10,8 @@ using Android;
 using Plugin.Permissions;
 using Plugin.CurrentActivity;
 using Acr.UserDialogs;
+using Android.Content;
+using PersonalUVApp.Pages;
 
 namespace PersonalUVApp.Droid
 {
@@ -35,6 +37,7 @@ namespace PersonalUVApp.Droid
             PermissionsImplementation.Current.OnRequestPermissionsResult(requestCode, permissions, grantResults);
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
+
     }
 
 }

@@ -30,7 +30,7 @@ namespace PersonalUVApp
             //else
             //{
             MainPage = new NavigationPage(new LoginPage()); //boyle kalsin simdilik
-            //MainPage = new NavigationPage(new AlarmPage()); //boyle kalsin simdilik
+            //MainPage = new NavigationPage(new DisplayAlarmPage("sa", "sa", null)); //boyle kalsin simdilik
             //}
         }
 

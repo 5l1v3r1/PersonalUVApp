@@ -10,9 +10,14 @@ namespace PersonalUVApp.Droid.Implementations
 {
     public class SetAlarmImplementation : ISetAlarm
     {
-        public void SetAlarm(int hour, int minute, string title, string message)
+        public void SetAlarm(int hour, int minute, string title, string message, int mode)
         {
-            Intent myintent = new Intent(Android.App.Application.Context, typeof(AlarmReceiver));
+            Intent myintent;
+            if (mode == 1)
+                myintent = new Intent(Android.App.Application.Context, typeof(NotificationAlarmReceiver));
+            else 
+                myintent = new Intent(Android.App.Application.Context, typeof(AlarmReceiver));
+
             myintent.PutExtra("message", message);
             myintent.PutExtra("title", title);
             int _id = DateTime.Now.Millisecond;

@@ -15,22 +15,22 @@ namespace PersonalUVApp.Pages
         public AlarmPage(string uvIndexMeans, string recommendText)
         {
             InitializeComponent();
+
+            tpAlarm.Time = DateTime.Now.TimeOfDay;
+            tpNotificationAlarm.Time = DateTime.Now.TimeOfDay;
+
             this.uvIndexMeans = uvIndexMeans;
             this.recommendText = recommendText;
         }
 
         void CreateAlarm(object sender, System.EventArgs e)
         {
-            Console.WriteLine(DateTime.Now.Hour + " " + DateTime.Now.Minute);
+            DependencyService.Get<ISetAlarm>().SetAlarm(DateTime.Now.Hour, DateTime.Now.Minute, uvIndexMeans, recommendText, 0);
+        }
 
-            //LocalNotificationsImplementation.NotificationIconId = Resource.Drawable.notifyicon;
-            //CrossLocalNotifications.Current.Show("Extreme Risk",
-            //   "A UV Index reading of 11 or more means extreme risk of harm from unprotected sun exposure. Take all precautions because unprotected skin and eyes can burn in minutes.");
-
-            //string title = "Extreme Risk";
-            //string message = "A UV Index reading of 11 or more means extreme risk of harm from unprotected sun exposure. Take all precautions because unprotected skin and eyes can burn in minutes.";
-
-            DependencyService.Get<ISetAlarm>().SetAlarm(DateTime.Now.Hour, DateTime.Now.Minute+1, uvIndexMeans, recommendText);
+        void CreateNotificationAlarm(object sender, System.EventArgs e)
+        {
+            DependencyService.Get<ISetAlarm>().SetAlarm(DateTime.Now.Hour, DateTime.Now.Minute, uvIndexMeans, recommendText, 1);
         }
     }
 }

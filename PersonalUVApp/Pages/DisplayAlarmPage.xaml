@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             Title="Display Alarm"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="PersonalUVApp.Pages.DisplayAlarmPage">
+    <ContentPage.Content>
+        
+        <StackLayout Padding="10"
+                     VerticalOptions="CenterAndExpand"
+                     Spacing="20">
+            
+            <Label x:Name="lblTitle" HorizontalTextAlignment="Center" 
+                   Text="A UV Index reading of 8 to 10 means very high risk of harm from unprotected sun exposure. Take extra precautions because unprotected skin and eyes will be damaged and can burn quickly." />
+            
+           
+            
+            <Button 
+                    x:Name="btnCloseAlarm"
+                    Clicked="StopAlarm"
+                    Text="Stop Alarm!"
+                    BackgroundColor="#d81b60"
+                    TextColor="White" 
+                    HeightRequest="50" />
+            
+            <Button 
+                    Text="Return Main Page" BackgroundColor="#3897F0"
+                Clicked="ReturnMainPage"
+                    TextColor="White" HeightRequest="50" VerticalOptions="Start"  />
+            
+            
+        </StackLayout>
+        
+        
+    </ContentPage.Content>
+</ContentPage>

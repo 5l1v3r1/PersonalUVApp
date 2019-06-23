@@ -103,7 +103,7 @@
                             </StackLayout>
                         </Frame>
                         <Frame Grid.Row="1" BackgroundColor="{StaticResource BarBackgroundColor}">
-                            <Label Text="Recommended Protection" TextColor="White" FontSize="Large" HorizontalOptions="StartAndExpand" VerticalOptions="Start" />
+                            <Label Text="Recommendation" TextColor="White" FontSize="Large" HorizontalOptions="StartAndExpand" VerticalOptions="Start" />
                         </Frame>
                         <Frame Grid.Row="2" x:Name="fmRecommendProtection">
                             <StackLayout>

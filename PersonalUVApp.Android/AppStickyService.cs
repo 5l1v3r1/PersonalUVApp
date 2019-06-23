@@ -19,7 +19,7 @@ namespace PersonalUVApp.Droid
         public override void OnCreate()
         {
             base.OnCreate();
-            Toast.MakeText(this, "service started ", ToastLength.Long).Show();
+            //Toast.MakeText(this, "service started ", ToastLength.Long).Show();
 
             System.Diagnostics.Debug.WriteLine("Sticky Service - Created");
         }
@@ -35,7 +35,7 @@ namespace PersonalUVApp.Droid
         public override Android.OS.IBinder OnBind(Android.Content.Intent intent)
         {
             System.Diagnostics.Debug.WriteLine("Sticky Service - Binded");
-            Toast.MakeText(this, "Service started", ToastLength.Long).Show();
+            //Toast.MakeText(this, "Service started", ToastLength.Long).Show();
 
             return null;
         }

@@ -37,10 +37,11 @@ namespace PersonalUVApp.Pages
         Dictionary<int, string> info = new Dictionary<int, string>();
         Dictionary<int, string> recommendedProtection = new Dictionary<int, string>();
 
-
         public MainPage()
         {
-            info.Add(3, "A UV Index reading of 0 to 2 means low danger from the sun\\'s UV rays for the average person.");
+
+
+            info.Add(3, "A UV Index reading of 0 to 2 means low danger from the sun's UV rays for the average person.");
             info.Add(6, "A UV Index reading of 3 to 5 means moderate risk of harm from unprotected sun exposure.");
             info.Add(8, "A UV Index reading of 6 to 7 means high risk of harm from unprotected sun exposure. Protection against skin and eye damage is needed.");
             info.Add(20, "A UV Index reading of 11 or more means extreme risk of harm from unprotected sun exposure. Take all precautions because unprotected skin and eyes can burn in minutes.");
@@ -50,7 +51,7 @@ namespace PersonalUVApp.Pages
             recommendedProtection.Add(6, "Stay in shade near midday when the sun is strongest. If outdoors, wear sun protective clothing, a wide-brimmed hat, and UV-blocking sunglasses. Generously apply broad spectrum SPF 30+ sunscreen every 2 hours, even on cloudy days, and after swimming or sweating. Bright surfaces, such as sand, water and snow, will increase UV exposure.");
             recommendedProtection.Add(8, "Reduce time in the sun between 10 a.m. and 4 p.m. If outdoors, seek shade and wear sun protective clothing, a wide-brimmed hat, and UV-blocking sunglasses. Generously apply broad spectrum SPF 30+ sunscreen every 2 hours, even on cloudy days, and after swimming or sweating. Bright surfaces, such sand, water and snow, will increase UV exposure.");
             recommendedProtection.Add(11, "Minimize sun exposure between 10 a.m. and 4 p.m. If outdoors, seek shade and wear sun protective clothing, a wide-brimmed hat, and UV-blocking sunglasses. Generously apply broad spectrum SPF 30+ sunscreen every 2 hours, even on cloudy days, and after swimming or sweating. Bright surfaces, such as sand, water and snow, will increase UV exposure.");
-            recommendedProtection.Add(20, " Try to avoid sun exposure between 10 a.m. and 4 p.m. If outdoors, seek shade and wear sun protective clothing, a wide-brimmed hat, and UV-blocking sunglasses. Generously apply broad spectrum SPF 30+ sunscreen every 2 hours, even on cloudy days, and after swimming or sweating. Bright surfaces, such as sand, water and snow, will increase UV exposure.");
+            recommendedProtection.Add(20, "Try to avoid sun exposure between 10 a.m. and 4 p.m. If outdoors, seek shade and wear sun protective clothing, a wide-brimmed hat, and UV-blocking sunglasses. Generously apply broad spectrum SPF 30+ sunscreen every 2 hours, even on cloudy days, and after swimming or sweating. Bright surfaces, such as sand, water and snow, will increase UV exposure.");
 
             User = JsonConvert.DeserializeObject<UserModel>(Settings.UserJson);
             InitializeComponent();
@@ -69,6 +70,7 @@ namespace PersonalUVApp.Pages
             if (Device.RuntimePlatform == Device.Android)
             {
                 var status = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Location);
+                status = PermissionStatus.Granted;
                 if (status != PermissionStatus.Granted)
                     await DisplayAlert("Need location", "In order to use this functionality, you must enable your gps", "OK");
 
@@ -87,83 +89,124 @@ namespace PersonalUVApp.Pages
                     DependencyService.Get<IMobileDeviceManager>().EnableBluetooth();
 
 
-                    //lblUvIndex.Text = "2.01";
-                    //lblTemp.Text = "28";
-                    //lblHum.Text = "45";
-                    //lblTime.Text = DateTime.Now.ToString("HH:mm:ss");
+                    var size = Device.GetNamedSize(NamedSize.Small, typeof(Label));
+                    Span spSafeText = new Span { Text = "\nSafe", ForegroundColor = Color.Green, FontAttributes = FontAttributes.Bold, FontSize = size };
+                    Span spConsiderableText = new Span { Text = "\nConsider able", ForegroundColor = Color.Orange, FontAttributes = FontAttributes.Bold, FontSize = size };
+                    Span spDangerText = new Span { Text = "\nDanger", ForegroundColor = Color.Red, FontAttributes = FontAttributes.Bold, FontSize = size };
 
-                    //MapIndexValueToTexts("2.01");
+                    /* SENSOR VALUES DEBUG PURPOSE
+                    formattedUVString.Spans.Add(new Span { Text = "2.20" });
+                    formattedUVString.Spans.Add(spSafeText);
 
-                    try
-                    {
+                    lblUvIndex.FormattedText = formattedUVString;
+                    lblTemp.Text = "25°C";
+                    lblHum.Text = "38%";
+                    lblTime.Text = "15:57:12"; //DateTime.Now.ToString("HH:mm:ss");
 
-                        CrossBleAdapter.Current.Scan().Subscribe(scanResult =>
-                        {
-                            Debug.WriteLine(scanResult.Device.NativeDevice + scanResult.Device.Name + " UUID: " + scanResult.Device.Uuid);
-                            if (scanResult.Device.Name == "HMSoft")
-                            {
-                                CrossBleAdapter.Current.StopScan();
+                    MapIndexValueToTexts("2.20");
+                    */                   
 
-                                IDevice device = scanResult.Device;
+                    /* for Notification DEBUG PURPOSE
+                    DependencyService.Get<ISetAlarm>().SetAlarm(DateTime.Now.Hour, DateTime.Now.Minute,
+                        "A UV Index reading of 6 to 7 means high risk of harm from unprotected sun exposure. Protection against skin and eye damage is needed.",
+                        "Reduce time in the sun between 10 a.m. and 4 p.m. If outdoors, seek shade and wear sun protective clothing, a wide-brimmed hat, and UV-blocking sunglasses. Generously apply broad spectrum SPF 30+ sunscreen every 2 hours, even on cloudy days, and after swimming or sweating. Bright surfaces, such sand, water and snow, will increase UV exposure.",
+                        1);
+                    */
 
-                                device.Connect();
-                                UserDialogs.Instance.HideLoading();
 
-                                scanResult.Device.WhenAnyCharacteristicDiscovered().Subscribe(chs =>
-                                {
-                                    if (chs.Uuid == new Guid("0000FFE1-0000-1000-8000-00805F9B34FB"))
-                                    {
-                                        chs.EnableNotifications().Subscribe(
-                                            result =>
-                                            {
-                                                Debug.WriteLine(result.Data);
-                                                chs.WhenNotificationReceived().Subscribe(res =>
-                                                {
-                                                    string ret = System.Text.Encoding.UTF8.GetString(res.Data);
-                                                    Device.BeginInvokeOnMainThread(() =>
-                                                    {
-                                                        var arr = ret.Split(',');
-                                                        if (arr.Length == 3)
-                                                        {
-                                                            lblUvIndex.Text = arr[0];
-                                                            lblTemp.Text = arr[1];
-                                                            lblHum.Text = arr[2].Substring(0, 5);
-                                                            lblTime.Text = DateTime.Now.ToString("HH:mm:ss");
+                      bool firstTimeAlarm = true;
+                      bool firstTimeNotification = true;
 
-                                                            MapIndexValueToTexts(arr[0]);
-                                                        }
-                                                    });
-                                                });
-                                            }
-                                        );
-                                    }
-                                });
-                            }
-                        });
-                    }
-                    catch (Exception ex)
-                    {
-                        UserDialogs.Instance.Alert(ex.Message);
+                      try
+                      {
+                          CrossBleAdapter.Current.Scan().Subscribe(scanResult =>
+                          {
+                              Debug.WriteLine(scanResult.Device.NativeDevice + scanResult.Device.Name + " UUID: " + scanResult.Device.Uuid);
+                              if (scanResult.Device.Name == "HMSoft")
+                              {
+                                  CrossBleAdapter.Current.StopScan();
 
-                        UserDialogs.Instance.Confirm(new ConfirmConfig
-                        {
-                            Title = "Bluetooth LE Scan Failure!",
-                            CancelText = "No, Close App!",
-                            OkText = "Try Again!",
-                            OnAction = (obj) =>
-                            {
-                                if (obj == true)
-                                {
-                                    EstablishConnectionReadData();
-                                }
-                                else
-                                {
-                                    DependencyService.Get<IMobileDeviceManager>().CloseApp();
-                                }
-                            }
-                        });
+                                  IDevice device = scanResult.Device;
 
-                    }
+                                  device.Connect();
+                                  UserDialogs.Instance.HideLoading();
+
+                                  scanResult.Device.WhenAnyCharacteristicDiscovered().Subscribe(chs =>
+                                  {
+                                      if (chs.Uuid == new Guid("0000FFE1-0000-1000-8000-00805F9B34FB"))
+                                      {
+                                          chs.EnableNotifications().Subscribe(
+                                              result =>
+                                              {
+                                                  Debug.WriteLine(result.Data);
+                                                  chs.WhenNotificationReceived().Subscribe(res =>
+                                                  {
+                                                      string ret = System.Text.Encoding.UTF8.GetString(res.Data);
+                                                      Device.BeginInvokeOnMainThread(() =>
+                                                      {
+                                                          var arr = ret.Split(',');
+                                                          if (arr.Length == 3)
+                                                          {
+                                                              double uvIndex = double.Parse(arr[0], new NumberFormatInfo() { NumberDecimalSeparator = "." });
+                                                              var formattedUVString = new FormattedString();
+                                                              formattedUVString.Spans.Add(new Span { Text = arr[0] });
+                                                              if (uvIndex < 3) formattedUVString.Spans.Add(spSafeText);
+                                                              else if (uvIndex < 7) formattedUVString.Spans.Add(spConsiderableText);
+                                                              else formattedUVString.Spans.Add(spDangerText);
+
+                                                              lblUvIndex.FormattedText = formattedUVString;
+                                                              lblTemp.Text = arr[1] + "°C" ;
+                                                              lblHum.Text = arr[2].Substring(0, 5) + "%"; 
+                                                              lblTime.Text = DateTime.Now.ToString("HH:mm:ss");
+
+                                                              MapIndexValueToTexts(arr[0]);
+
+                                                              if (uvIndex > 7 && firstTimeNotification)
+                                                              {
+                                                                  DependencyService.Get<ISetAlarm>().SetAlarm(DateTime.Now.Hour, DateTime.Now.Minute, lblUvIndexMeans.Text, lblRecommendProtection.Text, 1);
+
+                                                                  firstTimeNotification = false;
+                                                              }
+                                                              if (uvIndex > 9 && firstTimeAlarm)
+                                                              {
+                                                                  DependencyService.Get<ISetAlarm>().SetAlarm(DateTime.Now.Hour, DateTime.Now.Minute, lblUvIndexMeans.Text, lblRecommendProtection.Text, 0);
+
+                                                                  firstTimeAlarm = false;
+                                                              }
+                                                          }
+                                                      });
+                                                  });
+                                              }
+                                          );
+                                      }
+                                  });
+                              }
+                          });
+                      }
+                      catch (Exception ex)
+                      {
+                          UserDialogs.Instance.Alert(ex.Message);
+
+                          UserDialogs.Instance.Confirm(new ConfirmConfig
+                          {
+                              Title = "Bluetooth LE Scan Failure!",
+                              CancelText = "No, Close App!",
+                              OkText = "Try Again!",
+                              OnAction = (obj) =>
+                              {
+                                  if (obj == true)
+                                  {
+                                      EstablishConnectionReadData();
+                                  }
+                                  else
+                                  {
+                                      DependencyService.Get<IMobileDeviceManager>().CloseApp();
+                                  }
+                              }
+                          });
+
+                      }
+                     
                 }
                 else if (status != PermissionStatus.Unknown)
                 {

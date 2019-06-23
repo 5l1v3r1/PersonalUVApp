@@ -105,8 +105,9 @@
     <Compile Include="Implementations\MobileDeviceManager.cs" />
     <Compile Include="Renderers\TextViewCustomRenderer.cs" />
     <Compile Include="Implementations\SetAlarmImplementation.cs" />
-    <Compile Include="AlarmReceiver.cs" />
+    <Compile Include="NotificationAlarmReceiver.cs" />
     <Compile Include="AppStickyService.cs" />
+    <Compile Include="AlarmReceiver.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -138,6 +139,7 @@
     <AndroidResource Include="Resources\drawable\notifyicon.png" />
     <AndroidResource Include="Resources\values\String.xml" />
     <AndroidResource Include="Resources\drawable\notifyicon24.png" />
+    <AndroidResource Include="Resources\drawable\applogo.jpeg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\drawable-hdpi\" />

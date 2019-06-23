@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:controls="clr-namespace:PersonalUVApp.Controls;assembly=PersonalUVApp" x:Class="PersonalUVApp.Pages.RegisterPage" x:helper="clr-namespace:PersonalUVApp.Helper" Title="Register" BackgroundColor="{StaticResource PageBackgroundColor}">
     <ContentPage.Content>
-        <Grid Margin="20,20,20,0">
+        <Grid Margin="20,20,20,0" >
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                     <RowDefinition Height="60" />
@@ -16,11 +16,11 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <Entry Placeholder="Username" PlaceholderColor="#bababa" Text="{Binding Username}" FontSize="16" />
-                    <Entry Grid.Row="1" Placeholder="Password" PlaceholderColor="#bababa" Text="{Binding Password}" FontSize="16" />
-                    <Entry Grid.Row="2" Placeholder="First Name" PlaceholderColor="#bababa" Text="{Binding FirstName}" FontSize="16" />
-                    <Entry Grid.Row="3" Placeholder="Last Name" PlaceholderColor="#bababa" Text="{Binding LastName}" FontSize="16" />
-                    <Entry Grid.Row="4" Placeholder="Age" PlaceholderColor="#bababa" Text="{Binding Age}" FontSize="16" />
+                    <Entry Placeholder="Username" PlaceholderColor="#bababa" Text="{Binding User.Username}" FontSize="16" />
+                    <Entry Grid.Row="1" Placeholder="Password" PlaceholderColor="#bababa" Text="{Binding User.Password}" FontSize="16" />
+                    <Entry Grid.Row="2" Placeholder="First Name" PlaceholderColor="#bababa" Text="{Binding User.FirstName}" FontSize="16" />
+                    <Entry Grid.Row="3" Placeholder="Last Name" PlaceholderColor="#bababa" Text="{Binding User.LastName}" FontSize="16" />
+                    <Entry Grid.Row="4" Placeholder="Age" PlaceholderColor="#bababa" Text="{Binding User.Age}" FontSize="16" />
                     <Grid Grid.Row="5" BackgroundColor="#EEEEEE">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*" />
@@ -41,7 +41,7 @@
                     </Button>
                 </Grid>
                 <Button Grid.Row="1"
-                        Margin="0,0,0,10"  Command="{Binding LoginCommand}" Text="Sign Up" BackgroundColor="#3897F0" TextColor="White" />
+                        Margin="0,0,0,10"  Command="{Binding RegisterCommand}" Text="Sign Up" BackgroundColor="#3897F0" TextColor="White" />
         </Grid>
     </ContentPage.Content>
 </ContentPage>

@@ -13,11 +13,11 @@ namespace PersonalUVApp.Droid
 {
     [BroadcastReceiver]
     [IntentFilter(new string[] { "android.intent.action.BOOT_COMPLETED" }, Priority = (int)IntentFilterPriority.LowPriority)]
-    public class AlarmReceiver : BroadcastReceiver
+    public class NotificationAlarmReceiver : BroadcastReceiver
     {
         public override void OnReceive(Context context, Intent intent)
         {
-            Toast.MakeText(Android.App.Application.Context, "AlarmReceiver  OnReceive", ToastLength.Long).Show();
+            //Toast.MakeText(Android.App.Application.Context, "NotificationAlarmReceiver  OnReceive", ToastLength.Long).Show();
 
             var message = intent.GetStringExtra("message");
             var title = intent.GetStringExtra("title");
@@ -25,7 +25,6 @@ namespace PersonalUVApp.Droid
             i.PutExtra("message", message);
             i.PutExtra("title", title);
             context.StartService(i);
-
         }
     }
 

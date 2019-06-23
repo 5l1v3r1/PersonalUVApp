@@ -11,6 +11,7 @@
 	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 	<uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
 	<uses-permission android:name="android.permission.WAKE_LOCK" />
-	<application android:label="PersonalUVApp.Android"></application>
+	<uses-permission android:name="android.permission.VIBRATE" />
+	<application android:label="Personal UV App"></application>
 	<uses-feature android:name="android.hardware.bluetooth_le" android:required="true" />
 </manifest>
